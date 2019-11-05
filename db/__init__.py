@@ -13,15 +13,27 @@ class DB(object):
             self.DB = {}
 
     def getList(self, chat_id):
-        return self.DB[chat_id]
+        return self.DB.get(chat_id, [])
 
     def deleteIndex(self, chat_id, index):
-        del self.DB[chat_id][index]
-        self.save()
+        try:
+            del self.DB[chat_id][index]
+            self.save()
+            return 'success'
+        except Exception as e:
+            return str(e)
 
     def setTime(self, chat_id):
         self.DB[chat_id]['last_update'] = time.time()
         self.save()
+
+    def add(self, chat_id, chat):
+        self.DB[chat_id] = self.DB.get(chat_id, [])
+        if chat['id'] in [x['id'] for x in self.DB[chat_id]]:
+            return 'FAIL: subscripion already exist.'
+        self.DB[chat_id].append(chat)
+        self.save()
+        return 'success'
 
     def save(self):
         with open('db.yaml', 'w') as f:

@@ -36,8 +36,14 @@ def isMeaningful(m):
         return False
     return True
 
+def tryDelete(msg):
+    try:
+        msg.delete()
+    except:
+        pass
+
 def autoDestroy(msg):
-    threading.Timer(60, lambda: msg.delete()).start() 
+    threading.Timer(60, lambda: tryDelete(msg)).start() 
 
 def getChat(raw, msg):
     raw = str(raw).strip().split('/')[-1]
@@ -63,13 +69,16 @@ def splitCommand(text):
     return command.lower(), text[text.find(command) + len(command):].strip()
 
 def formatSubscription(s):
-    return '[' + s['name'] + '](t.me/' + str(s['id']) + ')'
+    return '[' + s['title'] + '](t.me/' + str(s['username']) + ')'
 
 def command(update, context):
     try:
         msg = update.message
+        autoDestroy(msg)
         command, text = splitCommand(msg.text)
+        print(command, text)
         if 's3_l' in command:
+            print('here')
             subscriptions = db.getList(msg.chat_id)
             subscriptions = [str(index) + ': ' + formatSubscription(x) for \
                 index, x in enumerate(subscriptions)]
@@ -87,19 +96,20 @@ def command(update, context):
                 r = msg.reply_text('please give index')
                 autoDestroy(r)
                 return
-            db.deleteIndex(msg.chat_id, index)
-            autoDestory(msg.reply_text('success', quote = False))
+            r = db.deleteIndex(msg.chat_id, index)
+            autoDestory(msg.reply_text(r, quote = False))
             return
         if 's3_s' in command:
-            chat = getChat(text)
+            chat = getChat(text, msg)
             if not chat:
                 return
-            print(chat)
-            # todo
+            r = db.add(msg.chat_id, chat.to_dict())
+            autoDestory(msg.reply(r, quote=False))
             return
     except Exception as e:
-        updater.bot.send_message(chat_id=debug_group, text=str(e))  
-
+        updater.bot.send_message(chat_id=debug_group, text=str(e)) 
+        print(e)
+        tb.print_exc()
 
 def manage(update, context):
     try:
@@ -111,7 +121,9 @@ def manage(update, context):
             return
         db.setTime(chat_id)
     except Exception as e:
-        updater.bot.send_message(chat_id=debug_group, text=str(e))    
+        updater.bot.send_message(chat_id=debug_group, text=str(e)) 
+        print(e)
+        tb.print_exc()   
 
 def start(update, context):
     if update.message:
