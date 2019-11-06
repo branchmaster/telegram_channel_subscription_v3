@@ -6,7 +6,8 @@ import sys
 import yaml
 import time
 from telegram.ext import Updater, MessageHandler, Filters
-from db import DB
+from db import SUBSCRIPTION
+from db import UPDATE_TIME
 import threading
 import traceback as tb
 
@@ -14,7 +15,9 @@ START_MESSAGE = ('''
 Channel Subscription for channels and groups. Bot needs to be in the subscribed channel.
 ''')
 
-db = DB()
+dbs = SUBSCRIPTION()
+dbu = UPDATE_TIME()
+queue = []
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -76,10 +79,8 @@ def command(update, context):
         msg = update.message
         autoDestroy(msg)
         command, text = splitCommand(msg.text)
-        print(command, text)
         if 's3_l' in command:
-            print('here')
-            subscriptions = db.getList(msg.chat_id)
+            subscriptions = dbs.getList(msg.chat_id)
             subscriptions = [str(index) + ': ' + formatSubscription(x) for \
                 index, x in enumerate(subscriptions)]
             r = msg.reply_text(
@@ -96,14 +97,14 @@ def command(update, context):
                 r = msg.reply_text('please give index')
                 autoDestroy(r)
                 return
-            r = db.deleteIndex(msg.chat_id, index)
+            r = dbs.deleteIndex(msg.chat_id, index)
             autoDestory(msg.reply_text(r, quote = False))
             return
         if 's3_s' in command:
             chat = getChat(text, msg)
             if not chat:
                 return
-            r = db.add(msg.chat_id, chat.to_dict())
+            r = dbs.add(msg.chat_id, chat.to_dict())
             autoDestory(msg.reply(r, quote=False))
             return
     except Exception as e:
@@ -112,14 +113,16 @@ def command(update, context):
         tb.print_exc()
 
 def manage(update, context):
+    global queue
     try:
         msg = update.message
         if (not msg) or (not isMeaningful(msg)):
             return 
         chat_id = msg.chat_id
-        if not chat_id or chat_id > 0:
-            return
-        db.setTime(chat_id)
+        if chat_id and chat_id > 0 and dbs.getList(chat_id):
+            dbu.setTime(chat_id)
+        for subscriber in dbs.getSubsriber(chat_id):
+            queue.append((subscriber, msg))
     except Exception as e:
         updater.bot.send_message(chat_id=debug_group, text=str(e)) 
         print(e)
