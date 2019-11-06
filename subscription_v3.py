@@ -168,6 +168,7 @@ def loopImp():
             if str(e) != 'Message to forward not found':
                 print(e)
                 tb.print_exc()
+                print(item)
                 updater.bot.send_message(chat_id=debug_group, text=str(e))
                 queue_to_push_back.append(item)
     for item in queue_to_push_back:
