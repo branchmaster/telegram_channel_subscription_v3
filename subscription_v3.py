@@ -78,7 +78,7 @@ def formatSubscription(s):
 
 def command(update, context):
     try:
-        msg = update.message
+        msg = update.effective_message
         autoDestroy(msg)
         command, text = splitCommand(msg.text)
         if 's3_l' in command:
@@ -117,13 +117,13 @@ def command(update, context):
 def manage(update, context):
     global queue
     try:
-        msg = update.message
+        msg = update.effective_message
         if (not msg) or (not isMeaningful(msg)):
             return 
         chat_id = msg.chat_id
         if chat_id and chat_id > 0 and dbs.getList(chat_id):
             dbu.setTime(chat_id)
-        for subscriber in dbs.getSubsribers(chat_id):
+        for subscriber in dbs.getSubsribers(chat_id)[::-1]:
             queue.append((subscriber, msg.chat_id, msg.message_id))
     except Exception as e:
         updater.bot.send_message(chat_id=debug_group, text=str(e)) 
@@ -142,7 +142,7 @@ dp.add_handler(MessageHandler((~Filters.private) and (~Filters.command), manage)
 dp.add_handler(MessageHandler(Filters.private, start))
 
 def isReady(subscriber):
-    return dbu.get(subscriber) + m_interval < time.time() # *60
+    return dbu.get(subscriber) + m_interval * 60 < time.time()
 
 def loopImp():
     global queue
@@ -159,10 +159,13 @@ def loopImp():
                     updater.bot.delete_message(chat_id = subscriber, message_id = cache[item])
                 except:
                     continue
-            cache[item] = msg.forward(chat_id).message_id
-            dbu.setTime(chat_id)
+            cache[item] = updater.bot.forward_message(
+                chat_id = subscriber,
+                from_chat_id = chat_id,
+                message_id = message_id).message_id
+            dbu.setTime(subscriber)
         except Exception as e:
-            if set(e) != 'Message to forward not found':
+            if str(e) != 'Message to forward not found':
                 print(e)
                 tb.print_exc()
                 updater.bot.send_message(chat_id=debug_group, text=str(e))
@@ -180,7 +183,7 @@ def loop():
             updater.bot.send_message(chat_id=debug_group, text=str(e))
         except:
             pass
-    threading.Timer(m_interval, loop).start() # *60
+    threading.Timer(m_interval * 60, loop).start() 
 
 threading.Timer(1, loop).start()
 

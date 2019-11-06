@@ -46,7 +46,7 @@ class SUBSCRIPTION(object):
 
     def getSubsribers(self, chat_id):
         result = []
-        for subscriber, items in enumerate(self.SUBSCRIPTION):
+        for subscriber, items in self.SUBSCRIPTION.items():
             for item in items:
                 if item['id'] == chat_id:
                     result.append(subscriber)
