@@ -16,6 +16,9 @@ class UPDATE_TIME(object):
         self.UPDATE_TIME[chat_id] = time.time()
         self.save()
 
+    def get(self, chat_id):
+        return self.UPDATE_TIME.get(chat_id, 0)
+
     def save(self):
         with open('update_time.yaml', 'w') as f:
             f.write(yaml.dump(self.UPDATE_TIME, sort_keys=True, indent=2))

@@ -18,6 +18,7 @@ Channel Subscription for channels and groups. Bot needs to be in the subscribed 
 dbs = SUBSCRIPTION()
 dbu = UPDATE_TIME()
 queue = []
+cache = {}
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -27,6 +28,7 @@ with open('config') as f:
 
 test_channel = -1001459876114
 debug_group = CREDENTIALS.get('debug_group') or -1001198682178
+m_interval = config['message_interval_min']
 
 def isMeaningful(m):
     if m.photo:
@@ -98,14 +100,14 @@ def command(update, context):
                 autoDestroy(r)
                 return
             r = dbs.deleteIndex(msg.chat_id, index)
-            autoDestory(msg.reply_text(r, quote = False))
+            autoDestroy(msg.reply_text(r, quote = False))
             return
         if 's3_s' in command:
             chat = getChat(text, msg)
             if not chat:
                 return
             r = dbs.add(msg.chat_id, chat.to_dict())
-            autoDestory(msg.reply(r, quote=False))
+            autoDestroy(msg.reply_text(r, quote=False))
             return
     except Exception as e:
         updater.bot.send_message(chat_id=debug_group, text=str(e)) 
@@ -121,8 +123,8 @@ def manage(update, context):
         chat_id = msg.chat_id
         if chat_id and chat_id > 0 and dbs.getList(chat_id):
             dbu.setTime(chat_id)
-        for subscriber in dbs.getSubsriber(chat_id):
-            queue.append((subscriber, msg))
+        for subscriber in dbs.getSubsribers(chat_id):
+            queue.append((subscriber, msg.chat_id, msg.message_id))
     except Exception as e:
         updater.bot.send_message(chat_id=debug_group, text=str(e)) 
         print(e)
@@ -138,6 +140,140 @@ dp = updater.dispatcher
 dp.add_handler(MessageHandler((~Filters.private) and (Filters.command), command))
 dp.add_handler(MessageHandler((~Filters.private) and (~Filters.command), manage))
 dp.add_handler(MessageHandler(Filters.private, start))
+
+def isReady(subscriber):
+    return dbu.get(subscriber) + m_interval < time.time() # *60
+
+def loopImp():
+    global queue
+    queue_to_push_back = []
+    while queue:
+        item = queue.pop()
+        subscriber, chat_id, message_id = item
+        if not isReady(subscriber):
+            queue_to_push_back.append(item)
+            continue
+        try:
+            if item in cache:
+                try:
+                    updater.bot.delete_message(chat_id = subscriber, message_id = cache[item])
+                except:
+                    continue
+            cache[item] = msg.forward(chat_id).message_id
+            dbu.setTime(chat_id)
+        except Exception as e:
+            if set(e) != 'Message to forward not found':
+                print(e)
+                tb.print_exc()
+                updater.bot.send_message(chat_id=debug_group, text=str(e))
+                queue_to_push_back.append(item)
+    for item in queue_to_push_back:
+        queue.append(item)
+
+def loop():
+    try:
+        loopImp()
+    except Exception as e:
+        print(e)
+        tb.print_exc()
+        try:
+            updater.bot.send_message(chat_id=debug_group, text=str(e))
+        except:
+            pass
+    threading.Timer(m_interval, loop).start() # *60
+
+threading.Timer(1, loop).start()
+
+def manualAdd(subscriber, chat_id):
+    msg = updater.bot.send_message(chat_id = subscriber, text = 'test')
+    msg.delete()
+    chat = getChat(chat_id, msg)
+    if not chat:
+        return
+    r = dbs.add(msg.chat_id, chat.to_dict())
+    autoDestroy(msg.reply_text(r, quote=False))
+    return
+
+old_config = {
+  "-1001484241754": [
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001445981123": [
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001419508192": [
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001414226421": [
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001409716127": [
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001402599670": [
+    {
+      "to": -1001414226421
+    }, 
+    {
+      "to": -1001197970228
+    }, 
+    {
+      "to": -1001409716127
+    }
+  ], 
+  "-1001357677191": [
+    {
+      "to": -1001198682178
+    }
+  ], 
+  "-1001341438972": [
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001251820947": [
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001241147938": [
+    {
+      "to": -1001197970228
+    }, 
+    {
+      "to": -1001414226421
+    }
+  ], 
+  "-1001187025732": [
+    {
+      "to": -1001414226421
+    }, 
+    {
+      "to": -1001197970228
+    }
+  ], 
+  "-1001100334908": [
+    {
+      "to": -1001197970228
+    }
+  ]
+}
+
+for chat_id in old_config:
+    print('here')
+    for item in old_config[chat_id]:
+        subscriber = int(item['to'])
+        manualAdd(subscriber, int(chat_id))
 
 updater.start_polling()
 updater.idle()
