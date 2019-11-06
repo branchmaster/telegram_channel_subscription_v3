@@ -74,7 +74,7 @@ def splitCommand(text):
     return command.lower(), text[text.find(command) + len(command):].strip()
 
 def formatSubscription(s):
-    return '[' + s['title'] + '](t.me/' + str(s['username']) + ')'
+    return '[' + s['title'] + '](t.me/' + str(s.get('username')) + ')'
 
 def command(update, context):
     try:
