@@ -16,6 +16,11 @@ The bot will automatically be running at the end of setup.
 
 Channel Subscription for channels and groups. Bot needs to be in the subscribed channel.
 
+Commands:
+/s3_l - list subscriptions
+/s3_un index - unsubscribe index
+/s3_s channel_link - subscribe channel
+
 Github: https://github.com/gaoyunzhi/telegram_channel_subscription_v3
 
 ## bot about 
