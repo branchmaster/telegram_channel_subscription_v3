@@ -158,7 +158,7 @@ def loopImp():
                 try:
                     updater.bot.delete_message(chat_id = subscriber, message_id = cache[item])
                 except:
-                    continue
+                    pass
             cache[item] = updater.bot.forward_message(
                 chat_id = subscriber,
                 from_chat_id = chat_id,
