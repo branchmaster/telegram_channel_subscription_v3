@@ -31,6 +31,8 @@ debug_group = CREDENTIALS.get('debug_group') or -1001198682178
 m_interval = config['message_interval_min']
 
 def isMeaningful(m):
+    if r.media_group_id:
+        return False
     if m.photo:
         return True
     if not m.text:
