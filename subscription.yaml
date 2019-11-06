@@ -3,11 +3,23 @@
   title: Social Justice Watch
   type: channel
   username: social_justice_watch
+- id: -1001241147938
+  title: "\U0001F4DAReading\U0001F4DA"
+  type: channel
+  username: books_and_reads
+- id: -1001187025732
+  title: Podcasts Discussion
+  type: channel
+  username: podcasts_discuss
 -1001409716127:
 - id: -1001402599670
   title: Social Justice Watch
   type: channel
   username: social_justice_watch
+-1001198682178:
+- id: -1001357677191
+  title: Test1
+  type: channel
 -1001197970228:
 - id: -1001409716127
   title: "\u5E73\u6743\u8BA8\u8BBA\u684C"
@@ -33,3 +45,22 @@
   title: Social Justice Watch
   type: channel
   username: social_justice_watch
+- id: -1001341438972
+  title: "\u79D1\u6280\u65B0\u77E5"
+  type: channel
+  username: random_knowledge_dushu
+- id: -1001251820947
+  title: Reading and Discussion
+  type: channel
+- id: -1001241147938
+  title: "\U0001F4DAReading\U0001F4DA"
+  type: channel
+  username: books_and_reads
+- id: -1001187025732
+  title: Podcasts Discussion
+  type: channel
+  username: podcasts_discuss
+- id: -1001100334908
+  title: "\u51C0\u8BFB"
+  type: channel
+  username: today_read
