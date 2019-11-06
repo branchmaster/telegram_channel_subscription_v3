@@ -121,7 +121,7 @@ def manage(update, context):
         if (not msg) or (not isMeaningful(msg)):
             return 
         chat_id = msg.chat_id
-        if chat_id and chat_id > 0 and dbs.getList(chat_id):
+        if chat_id and chat_id < 0 and dbs.getList(chat_id):
             dbu.setTime(chat_id)
         for subscriber in dbs.getSubsribers(chat_id)[::-1]:
             queue.append((subscriber, msg.chat_id, msg.message_id))
