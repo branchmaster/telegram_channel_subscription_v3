@@ -20,9 +20,9 @@ dbs = SUBSCRIPTION()
 dbu = UPDATE_TIME()
 queue = []
 cache = {}
-hashes = set()
+hashes = {}
 
-SEC_PER_MIN = 1
+SEC_PER_MIN = 60
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -50,6 +50,12 @@ def isMeaningful(m):
 def tryDelete(msg):
     try:
         msg.delete()
+    except:
+        pass
+
+def tryDeleteById(chat_id, msg_id):
+    try:
+        updater.bot.delete_message(chat_id = chat_id, message_id = msg_id)
     except:
         pass
 
@@ -150,13 +156,14 @@ dp.add_handler(MessageHandler(Filters.private, start))
 def isReady(subscriber):
     return dbu.get(subscriber) + m_interval * SEC_PER_MIN < time.time()
 
-def duplicateMsg(msg):
+def findDup(msg):
+    global hashes
     s = str(msg.chat_id) + str(msg.text) + str(msg.photo)
     s = s.encode('utf-8')
     h = hashlib.sha224(s).hexdigest()
     if h in hashes:
-        return True
-    hashes.add(h)
+        return hashes[h]
+    hashes[h] = msg.message_id
 
 def loopImp():
     global queue
@@ -169,18 +176,15 @@ def loopImp():
             continue
         try:
             if item in cache:
-                try:
-                    updater.bot.delete_message(chat_id = subscriber, message_id = cache[item])
-                except:
-                    pass
+                tryDeleteById(subscriber, cache[item])
             r = updater.bot.forward_message(
                 chat_id = subscriber,
                 from_chat_id = chat_id,
                 message_id = message_id)
             cache[item] = r.message_id
-            if duplicateMsg(r):
-                r.delete()
-                continue
+            dup_msg = findDup(r)
+            if dup_msg:
+                tryDeleteById(subscriber, dup_msg)
             dbu.setTime(subscriber)
         except Exception as e:
             if str(e) not in ['Message to forward not found', 'Message_id_invalid']:
