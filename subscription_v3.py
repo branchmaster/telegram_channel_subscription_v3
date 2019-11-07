@@ -10,6 +10,7 @@ from db import SUBSCRIPTION
 from db import UPDATE_TIME
 import threading
 import traceback as tb
+import hashlib
 
 START_MESSAGE = ('''
 Channel Subscription for channels and groups. Bot needs to be in the subscribed channel.
@@ -19,6 +20,9 @@ dbs = SUBSCRIPTION()
 dbu = UPDATE_TIME()
 queue = []
 cache = {}
+hashes = set()
+
+SEC_PER_MIN = 1
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -144,7 +148,15 @@ dp.add_handler(MessageHandler((~Filters.private) and (~Filters.command), manage)
 dp.add_handler(MessageHandler(Filters.private, start))
 
 def isReady(subscriber):
-    return dbu.get(subscriber) + m_interval * 60 < time.time()
+    return dbu.get(subscriber) + m_interval * SEC_PER_MIN < time.time()
+
+def duplicateMsg(msg):
+    s = str(msg.chat_id) + str(msg.text) + str(msg.photo)
+    s = s.encode('utf-8')
+    h = hashlib.sha224(s).hexdigest()
+    if h in hashes:
+        return True
+    hashes.add(h)
 
 def loopImp():
     global queue
@@ -161,13 +173,17 @@ def loopImp():
                     updater.bot.delete_message(chat_id = subscriber, message_id = cache[item])
                 except:
                     pass
-            cache[item] = updater.bot.forward_message(
+            r = updater.bot.forward_message(
                 chat_id = subscriber,
                 from_chat_id = chat_id,
-                message_id = message_id).message_id
+                message_id = message_id)
+            cache[item] = r.message_id
+            if duplicateMsg(r):
+                r.delete()
+                continue
             dbu.setTime(subscriber)
         except Exception as e:
-            if str(e) != 'Message to forward not found':
+            if str(e) not in ['Message to forward not found', 'Message_id_invalid']:
                 print(e)
                 tb.print_exc()
                 print(item)
@@ -186,7 +202,7 @@ def loop():
             updater.bot.send_message(chat_id=debug_group, text=str(e))
         except:
             pass
-    threading.Timer(m_interval * 60, loop).start() 
+    threading.Timer(m_interval * SEC_PER_MIN, loop).start() 
 
 threading.Timer(1, loop).start()
 
