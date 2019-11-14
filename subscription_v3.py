@@ -96,6 +96,8 @@ def command(update, context):
         chat_id = msg.chat_id
         if chat_id and chat_id < 0 and dbs.getList(chat_id):
             dbu.setPause(chat_id)
+        autoDestroy(msg.reply_text('success', quote=False))
+        return
 
 @log_on_fail(updater)
 def manage(update, context):
