@@ -32,7 +32,7 @@ debug_group = CREDENTIALS.get('debug_group') or -1001198682178
 m_interval = config['message_interval_min']
 updater = Updater(CREDENTIALS['bot_token'], use_context=True)
 
-INTERVAL = 1 # m_interval * 60
+INTERVAL = m_interval * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
