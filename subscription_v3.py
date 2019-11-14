@@ -94,6 +94,10 @@ def command(update, context):
         r = dbs.add(msg.chat_id, chat.to_dict())
         autoDestroy(msg.reply_text(r, quote=False))
         return
+    if 'pause' in command:
+        chat_id = msg.chat_id
+        if chat_id and chat_id < 0 and dbs.getList(chat_id):
+            dbu.setPause(chat_id)
 
 @log_on_fail(updater)
 def manage(update, context):

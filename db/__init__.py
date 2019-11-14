@@ -16,6 +16,10 @@ class UPDATE_TIME(object):
         self.UPDATE_TIME[chat_id] = time.time()
         self.save()
 
+    def setPause(self, chat_id):
+        self.UPDATE_TIME[chat_id] = time.time() + 4 * 60 * 60
+        self.save()
+
     def get(self, chat_id):
         return self.UPDATE_TIME.get(chat_id, 0)
 
