@@ -23,8 +23,6 @@ queue = []
 cache = {}
 hashes = {}
 
-SEC_PER_MIN = 60
-
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -35,6 +33,8 @@ test_channel = -1001459876114
 debug_group = CREDENTIALS.get('debug_group') or -1001198682178
 m_interval = config['message_interval_min']
 updater = Updater(CREDENTIALS['bot_token'], use_context=True)
+
+INTERVAL = 1 # m_interval * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
@@ -120,7 +120,7 @@ updater.dispatcher.add_handler(MessageHandler((~Filters.private) and (~Filters.c
 updater.dispatcher.add_handler(MessageHandler(Filters.private, start))
 
 def isReady(subscriber):
-    return dbu.get(subscriber) + m_interval * SEC_PER_MIN < time.time()
+    return dbu.get(subscriber) + INTERVAL < time.time()
 
 def findDup(msg):
     global hashes
@@ -165,7 +165,7 @@ def loopImp():
 
 def loop():
     loopImp()
-    threading.Timer(m_interval * SEC_PER_MIN, loop).start() 
+    threading.Timer(INTERVAL, loop).start() 
 
 threading.Timer(1, loop).start()
 
