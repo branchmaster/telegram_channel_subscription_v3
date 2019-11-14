@@ -1,3 +1,8 @@
+-1001445981123:
+- id: -1001241147938
+  title: "\U0001F4DAReading\U0001F4DA"
+  type: channel
+  username: books_and_reads
 -1001414226421:
 - id: -1001402599670
   title: Social Justice Watch
@@ -37,10 +42,6 @@
   title: "\u4E34\u6797\u5C0F\u5C45"
   type: channel
   username: soft_and_comfort
-- id: -1001414226421
-  title: "\u82F1\u6587\u5B66\u4E60\u684C"
-  type: channel
-  username: english_learning_discuss
 - id: -1001402599670
   title: Social Justice Watch
   type: channel
