@@ -1,2 +1,3 @@
 python-telegram-bot
 pyyaml
+telegram_util>=0.0.4
