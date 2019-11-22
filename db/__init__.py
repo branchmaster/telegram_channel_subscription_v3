@@ -4,13 +4,7 @@ import time
 
 class UPDATE_TIME(object):
     def __init__(self):
-        try:
-            with open('update_time.yaml') as f:
-                self.UPDATE_TIME = yaml.load(f, Loader=yaml.FullLoader)
-        except Exception as e:
-            print(e)
-            tb.print_exc()
-            self.UPDATE_TIME = {}
+        self.UPDATE_TIME = {}
 
     def setTime(self, chat_id):
         self.UPDATE_TIME[chat_id] = time.time()
