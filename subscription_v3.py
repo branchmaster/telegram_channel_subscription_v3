@@ -102,7 +102,7 @@ def command(update, context):
 @log_on_fail(updater)
 def manage(update, context):
     global queue
-    msg = update.effective_message
+    msg = update.message
     if (not msg) or (not isMeaningful(msg)):
         return 
     chat_id = msg.chat_id
