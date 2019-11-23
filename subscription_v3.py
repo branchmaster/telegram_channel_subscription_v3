@@ -99,10 +99,10 @@ def command(update, context):
         autoDestroy(msg.reply_text('success', quote=False))
         return
 
-@log_on_fail(tele)
+@log_on_fail(debug_group)
 def manage(update, context):
     global queue
-    msg = update.message
+    msg = update.channel_post
     if (not msg) or (not isMeaningful(msg)):
         return 
     chat_id = msg.chat_id
@@ -116,7 +116,7 @@ def start(update, context):
         update.message.reply_text(START_MESSAGE)
 
 tele.dispatcher.add_handler(MessageHandler((~Filters.private) and (Filters.command), command))
-tele.dispatcher.add_handler(MessageHandler((~Filters.private) and (~Filters.command), manage))
+tele.dispatcher.add_handler(MessageHandler(Filters.update.channel_posts and (~Filters.command), manage))
 tele.dispatcher.add_handler(MessageHandler(Filters.private, start))
 
 def isReady(subscriber):
