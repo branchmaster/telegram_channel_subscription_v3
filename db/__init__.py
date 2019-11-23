@@ -2,6 +2,32 @@ import traceback as tb
 import yaml
 import time
 
+class QUEUE(object):
+    def __init__(self):
+        try:
+            with open('queue.yaml') as f:
+                self.queue = yaml.load(f, Loader=yaml.FullLoader)
+        except Exception as e:
+            print(e)
+            tb.print_exc()
+            self.queue = []
+
+    def append(self, x):
+        self.queue.append(x)
+        self.save()
+
+    def pop(self):
+        x = self.queue.pop()
+        self.save()
+        return x
+
+    def empty(self):
+        return len(self.queue) == 0
+
+    def save(self):
+        with open('queue.yaml', 'w') as f:
+            f.write(yaml.dump(self.queue, sort_keys=True, indent=2))
+
 class UPDATE_TIME(object):
     def __init__(self):
         try:

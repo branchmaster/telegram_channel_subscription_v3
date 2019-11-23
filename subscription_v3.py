@@ -6,6 +6,7 @@ import time
 from telegram.ext import Updater, MessageHandler, Filters
 from db import SUBSCRIPTION
 from db import UPDATE_TIME
+from db import QUEUE
 import threading
 import traceback as tb
 import hashlib
@@ -17,7 +18,7 @@ Channel Subscription for channels and groups. Bot needs to be in the subscribed 
 
 dbs = SUBSCRIPTION()
 dbu = UPDATE_TIME()
-queue = []
+queue = QUEUE()
 cache = {}
 hashes = {}
 
@@ -135,7 +136,7 @@ def findDup(msg):
 def loopImp():
     global queue
     queue_to_push_back = []
-    while queue:
+    while not queue.empty():
         item = queue.pop()
         subscriber, chat_id, message_id = item
         if not isReady(subscriber):
