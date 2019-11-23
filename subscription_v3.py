@@ -28,15 +28,15 @@ with open('config') as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 test_channel = -1001459876114
-debug_group = CREDENTIALS.get('debug_group') or -1001198682178
 m_interval = config['message_interval_min']
-updater = Updater(CREDENTIALS['bot_token'], use_context=True)
+tele = Updater(CREDENTIALS['bot_token'], use_context=True)
+debug_group = tele.bot.get_chat(-1001198682178)
 
-INTERVAL = m_interval * 60
+INTERVAL = 1 # m_interval * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
-        updater.bot.delete_message(chat_id = chat_id, message_id = msg_id)
+        tele.bot.delete_message(chat_id = chat_id, message_id = msg_id)
     except:
         pass
 
@@ -48,7 +48,7 @@ def getChat(raw, msg):
         if raw and raw[0] != '@':
             raw = '@' + raw
     try:
-        result = updater.bot.sendMessage(raw, 'test') 
+        result = tele.bot.sendMessage(raw, 'test') 
         result.delete()
         return result.chat
     except Exception as e:
@@ -59,7 +59,7 @@ def getChat(raw, msg):
 def formatSubscription(s):
     return '[' + s['title'] + '](t.me/' + str(s.get('username')) + ')'
 
-@log_on_fail(updater)
+@log_on_fail(debug_group)
 def command(update, context):
     msg = update.effective_message
     autoDestroy(msg)
@@ -99,7 +99,7 @@ def command(update, context):
         autoDestroy(msg.reply_text('success', quote=False))
         return
 
-@log_on_fail(updater)
+@log_on_fail(tele)
 def manage(update, context):
     global queue
     msg = update.message
@@ -115,9 +115,9 @@ def start(update, context):
     if update.message:
         update.message.reply_text(START_MESSAGE)
 
-updater.dispatcher.add_handler(MessageHandler((~Filters.private) and (Filters.command), command))
-updater.dispatcher.add_handler(MessageHandler((~Filters.private) and (~Filters.command), manage))
-updater.dispatcher.add_handler(MessageHandler(Filters.private, start))
+tele.dispatcher.add_handler(MessageHandler((~Filters.private) and (Filters.command), command))
+tele.dispatcher.add_handler(MessageHandler((~Filters.private) and (~Filters.command), manage))
+tele.dispatcher.add_handler(MessageHandler(Filters.private, start))
 
 def isReady(subscriber):
     return dbu.get(subscriber) + INTERVAL < time.time()
@@ -131,7 +131,7 @@ def findDup(msg):
         return hashes[h]
     hashes[h] = msg.message_id
 
-@log_on_fail(updater)
+@log_on_fail(debug_group)
 def loopImp():
     global queue
     queue_to_push_back = []
@@ -144,7 +144,7 @@ def loopImp():
         try:
             if item in cache:
                 tryDeleteById(subscriber, cache[item])
-            r = updater.bot.forward_message(
+            r = tele.bot.forward_message(
                 chat_id = subscriber,
                 from_chat_id = chat_id,
                 message_id = message_id)
@@ -158,7 +158,7 @@ def loopImp():
                 print(e)
                 tb.print_exc()
                 print(item)
-                updater.bot.send_message(chat_id=debug_group, text=str(e))
+                debug_group.send_message(str(e))
                 queue_to_push_back.append(item)
     for item in queue_to_push_back[::-1]:
         queue.append(item)
@@ -169,5 +169,5 @@ def loop():
 
 threading.Timer(1, loop).start()
 
-updater.start_polling()
-updater.idle()
+tele.start_polling()
+tele.idle()
