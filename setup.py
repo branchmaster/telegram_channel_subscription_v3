@@ -9,7 +9,7 @@ def setup(arg = ''):
 		kill()
 		return 
 
-	RUN_COMMAND = 'nohup python3 subscription_v3.py &'
+	RUN_COMMAND = 'nohup python3 -u subscription_v3.py &'
 	
 	if arg != 'debug':
 		r = os.system('sudo pip3 install -r requirements.txt')
