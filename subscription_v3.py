@@ -37,7 +37,8 @@ INTERVAL = 60 # m_interval * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
-        tele.bot.delete_message(chat_id = chat_id, message_id = msg_id)
+        tele.bot.delete_message(chat_id = c
+            hat_id, message_id = msg_id)
     except:
         pass
 
@@ -140,7 +141,8 @@ def loopImp():
     while not queue.empty():
         item = queue.pop()
         subscriber, chat_id, message_id = item
-        if !isReady(subscriber) or (chat_id, message_id) in forwarded:
+        if (not isReady(subscriber)) or \
+            (chat_id, message_id) in forwarded:
             queue_to_push_back.append(item)
             continue
         forwarded.add((chat_id, message_id))
