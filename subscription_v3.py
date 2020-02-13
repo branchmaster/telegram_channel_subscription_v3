@@ -136,12 +136,14 @@ def findDup(msg):
 def loopImp():
     global queue
     queue_to_push_back = []
+    forwarded = set()
     while not queue.empty():
         item = queue.pop()
         subscriber, chat_id, message_id = item
-        if not isReady(subscriber):
+        if !isReady(subscriber) or (chat_id, message_id) in forwarded:
             queue_to_push_back.append(item)
             continue
+        forwarded.add((chat_id, message_id))
         try:
             if item in cache:
                 tryDeleteById(subscriber, cache[item])
