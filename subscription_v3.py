@@ -33,7 +33,7 @@ m_interval = config['message_interval_min']
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
 
-INTERVAL = 60 # m_interval * 60
+INTERVAL = m_interval * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
