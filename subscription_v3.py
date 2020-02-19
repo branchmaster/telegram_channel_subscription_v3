@@ -19,6 +19,7 @@ Channel Subscription for channels and groups. Bot needs to be in the subscribed 
 dbs = SUBSCRIPTION()
 dbu = UPDATE_TIME()
 queue = QUEUE()
+media = {}
 cache = {}
 hashes = {}
 
@@ -100,17 +101,27 @@ def command(update, context):
         autoDestroy(msg.reply_text('success', quote=False))
         return
 
+def isMeaningfulNew(msg):
+    if isMeaningful(msg):
+        return True
+    return not not msg.media_group_id
+
 @log_on_fail(debug_group)
 def manage(update, context):
     global queue
     msg = update.channel_post
-    if (not msg) or (not isMeaningful(msg)):
+    if (not msg) or (not isMeaningfulNew(msg)):
         return 
     chat_id = msg.chat_id
     if chat_id and chat_id < 0 and dbs.getList(chat_id):
         dbu.setTime(chat_id)
     for subscriber in dbs.getSubsribers(chat_id)[::-1]:
-        queue.append((subscriber, msg.chat_id, msg.message_id)) 
+        if msg.media_group_id:
+            queue.append((subscriber, msg.chat_id, msg.media_group_id))
+            media[msg.media_group_id] = media.get(msg.media_group_id, [])
+            media[msg.media_group_id].append(msg.photo)
+        else:
+            queue.append((subscriber, msg.chat_id, msg.message_id)) 
 
 def start(update, context):
     if update.message:
@@ -148,10 +159,13 @@ def loopImp():
         try:
             if item in cache:
                 tryDeleteById(subscriber, cache[item])
-            r = tele.bot.forward_message(
-                chat_id = subscriber,
-                from_chat_id = chat_id,
-                message_id = message_id)
+            if message_id in media:
+                r = tele.bot.send_media_group(subscriber, media[message_id])[0]
+            else:
+                r = tele.bot.forward_message(
+                    chat_id = subscriber,
+                    from_chat_id = chat_id,
+                    message_id = message_id)
             cache[item] = r.message_id
             dup_msg = findDup(r)
             if dup_msg:
