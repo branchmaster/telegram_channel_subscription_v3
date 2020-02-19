@@ -4,6 +4,7 @@
 import yaml
 import time
 from telegram.ext import Updater, MessageHandler, Filters
+from telegram import InputMediaPhoto
 from db import SUBSCRIPTION
 from db import UPDATE_TIME
 from db import QUEUE
@@ -119,7 +120,8 @@ def manage(update, context):
         if msg.media_group_id:
             queue.append((subscriber, msg.chat_id, msg.media_group_id))
             media[msg.media_group_id] = media.get(msg.media_group_id, [])
-            media[msg.media_group_id].append(msg.photo)
+            imp = InputMediaPhoto(msg.photo, caption=msg.caption, parse_mode=msg.parse_mode)
+            media[msg.media_group_id].append(imp)
         else:
             queue.append((subscriber, msg.chat_id, msg.message_id)) 
 
