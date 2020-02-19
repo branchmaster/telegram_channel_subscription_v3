@@ -120,7 +120,7 @@ def manage(update, context):
         if msg.media_group_id:
             queue.append((subscriber, msg.chat_id, msg.media_group_id))
             media[msg.media_group_id] = media.get(msg.media_group_id, [])
-            imp = InputMediaPhoto(msg.photo, caption=msg.caption)
+            imp = InputMediaPhoto(msg.photo[-1].file_id, caption=msg.caption)
             media[msg.media_group_id].append(imp)
         else:
             queue.append((subscriber, msg.chat_id, msg.message_id)) 
