@@ -35,7 +35,7 @@ m_interval = config['message_interval_min']
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
 
-INTERVAL = 1 # m_interval * 60
+INTERVAL = 10 # m_interval * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
@@ -118,9 +118,10 @@ def manage(update, context):
         dbu.setTime(chat_id)
     for subscriber in dbs.getSubsribers(chat_id)[::-1]:
         if msg.media_group_id:
-            queue.append((subscriber, msg.chat_id, msg.media_group_id))
+            if (subscriber, msg.chat_id, msg.media_group_id) not in queue:
+                queue.append((subscriber, msg.chat_id, msg.media_group_id))
             media[msg.media_group_id] = media.get(msg.media_group_id, [])
-            imp = InputMediaPhoto(msg.photo[-1].file_id, caption=msg.caption)
+            imp = InputMediaPhoto(msg.photo[-1].file_id, caption=msg.caption_markdown, parse_mode='Markdown')
             media[msg.media_group_id].append(imp)
         else:
             queue.append((subscriber, msg.chat_id, msg.message_id)) 
@@ -162,6 +163,7 @@ def loopImp():
             if item in cache:
                 tryDeleteById(subscriber, cache[item])
             if message_id in media:
+                print(len(media[message_id]))
                 r = tele.bot.send_media_group(subscriber, media[message_id])[0]
             else:
                 r = tele.bot.forward_message(
