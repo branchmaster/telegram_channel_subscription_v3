@@ -21,11 +21,19 @@
   title: Social Justice Watch
   type: channel
   username: social_justice_watch
+- id: -1001474132510
+  title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
+  type: channel
+  username: daily_feminist
 -1001369425802:
 - id: -1001409716127
   title: "\u5E73\u6743\u89C2\u5BDF"
   type: channel
   username: equality_and_rights
+- id: -1001474132510
+  title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
+  type: channel
+  username: daily_feminist
 -1001368792927:
 - id: -1001219207617
   title: "\u884C\u52A8\u6D3E\u516C\u6C11\u8054\u76DF"
@@ -39,6 +47,15 @@
   title: "\u5E73\u6743\u89C2\u5BDF"
   type: channel
   username: equality_and_rights
+- id: -1001474132510
+  title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
+  type: channel
+  username: daily_feminist
+-1001282758208:
+- id: -1001474132510
+  title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
+  type: channel
+  username: daily_feminist
 -1001199060777:
 - id: -1001219207617
   title: "\u884C\u52A8\u6D3E\u516C\u6C11\u8054\u76DF"
@@ -52,6 +69,10 @@
   title: "\u5E73\u6743\u89C2\u5BDF"
   type: channel
   username: equality_and_rights
+- id: -1001474132510
+  title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
+  type: channel
+  username: daily_feminist
 -1001198682178:
 - id: -1001357677191
   title: Test1
@@ -69,6 +90,10 @@
   title: "\u5E73\u6743\u89C2\u5BDF"
   type: channel
   username: equality_and_rights
+- id: -1001474132510
+  title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
+  type: channel
+  username: daily_feminist
 -1001197970228:
 - id: -1001409716127
   title: "\u5E73\u6743\u8BA8\u8BBA\u684C"
@@ -113,3 +138,7 @@
   title: "\u653F\u6CBB\u89C2\u5BDF"
   type: channel
   username: freedom_watch
+- id: -1001474132510
+  title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
+  type: channel
+  username: daily_feminist
