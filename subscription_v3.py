@@ -35,7 +35,7 @@ m_interval = config['message_interval_min']
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
 
-INTERVAL = m_interval * 60
+INTERVAL = 1 # m_interval * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
@@ -163,6 +163,7 @@ def loopImp():
             if item in cache:
                 tryDeleteById(subscriber, cache[item])
             if message_id in media:
+                debug_group.send_message(len(media[message_id]))
                 r = tele.bot.send_media_group(subscriber, media[message_id])[0]
             else:
                 r = tele.bot.forward_message(
