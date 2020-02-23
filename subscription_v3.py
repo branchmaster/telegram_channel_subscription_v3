@@ -121,8 +121,9 @@ def manage(update, context):
             if (subscriber, msg.chat_id, msg.media_group_id) not in queue.queue:
                 queue.append((subscriber, msg.chat_id, msg.media_group_id))
             media[msg.media_group_id] = media.get(msg.media_group_id, [])
-            imp = InputMediaPhoto(msg.photo[-1].file_id, caption=msg.caption_markdown, parse_mode='Markdown')
-            media[msg.media_group_id].append(imp)
+            if msg.photo[-1].file_id not in [x.media for x in media[msg.media_group_id]]:
+                imp = InputMediaPhoto(msg.photo[-1].file_id, caption=msg.caption_markdown, parse_mode='Markdown')
+                media[msg.media_group_id].append(imp)
         else:
             queue.append((subscriber, msg.chat_id, msg.message_id)) 
 
