@@ -83,7 +83,7 @@ def forwardMsg(item):
 
 @log_on_fail(debug_group)
 def loopImp():
-    dbh.clearHold()
+    dbh.clearHold(debug_group)
     queue_to_push_back = []
     while not queue.empty():
         item = queue.pop()
