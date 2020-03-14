@@ -35,7 +35,9 @@ INTERVAL = 60 * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
+        print('tryDeleteById', chat_id, msg_id)
         tele.bot.delete_message(chat_id = chat_id, message_id = msg_id)
+        print('DeletedById', chat_id, msg_id)
     except:
         pass
 
