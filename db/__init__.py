@@ -1,7 +1,7 @@
 import time
 import yaml
 
-HOUR = 5 # 60 * 60 # when testing album, need to change to 60
+HOUR = 20 # 60 * 60 # when testing album, need to change to 60
 
 class HOLD(object):
     def __init__(self):
