@@ -14,6 +14,10 @@ class QUEUE(object):
         self.queue.append(x)
         self.save()
 
+    def replace(self, x):
+        self.queue = x
+        self.save()
+
     def pop(self):
         x = self.queue.pop()
         self.save()
