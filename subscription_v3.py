@@ -2,12 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import yaml
-import time
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram import InputMediaPhoto
 from db import SUBSCRIPTION, QUEUE, HOLD, CACHE, HOUR
 import threading
-import traceback as tb
 from telegram_util import log_on_fail
 from command import handleCommand
 
@@ -32,10 +30,7 @@ def hold(msg):
     dbh.hold(orig_msg, hold_hour = 5)
     cache.add((msg.chat_id, orig_msg[0], orig_msg[1]))
 
-    if msg.chat_id == 1001197970228: # Hack...
-        hold_hour = 1
-    else:
-        hold_hour = 3
+    hold_hour = 1 if msg.chat_id == 1001197970228 else 3 # Hack...
     dbh.hold(msg.chat_id, hold_hour=hold_hour)
 
 @log_on_fail(debug_group)
@@ -60,17 +55,13 @@ tele.dispatcher.add_handler(MessageHandler(
 def forwardMsg(item):
     reciever, chat_id, message_id, media_group_id = item
     if not media_group_id:
-        return [bot.forward_message(
-            chat_id = reciever,
-            from_chat_id = chat_id,
-            message_id = message_id)]
+        return [bot.forward_message(chat_id = reciever,
+            from_chat_id = chat_id, message_id = message_id)]
     media = []
-    for message_id in queue.pop_all(reciever, chat_id, media_group_id):
+    for mid in queue.pop_all(reciever, chat_id, media_group_id) + [message_id]:
         try:
-            r = bot.forward_message(
-                chat_id = debug_group.id, 
-                from_chat_id = chat_id,
-                message_id = message_id)
+            r = bot.forward_message(chat_id = debug_group.id, 
+                from_chat_id = chat_id, message_id = mid)
             r.delete()
         except:
             pass
@@ -93,10 +84,8 @@ def loopImp():
             continue
         
         try:
-            r = bot.forward_message(
-                chat_id = debug_group.id, 
-                from_chat_id = chat_id,
-                message_id = message_id)
+            r = bot.forward_message(chat_id = debug_group.id, 
+                from_chat_id = chat_id, message_id = message_id)
             r.delete()
         except:
             queue_to_push_back.pop()
