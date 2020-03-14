@@ -33,6 +33,12 @@ class QUEUE(object):
         self.save()
         return x
 
+    def pop_all(self, a, b, d):
+        r = [x[2] for x in self.queue if x[0] == a and x[1] == b and x[3] == d]
+        self.queue = [x for x in self.queue if not (x[0] == a and x[1] == b and x[3] == d)]
+        self.save()
+        return r
+
     def empty(self):
         return len(self.queue) == 0
 
