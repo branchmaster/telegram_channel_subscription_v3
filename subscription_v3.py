@@ -102,8 +102,9 @@ def loopImp():
             queue_to_push_back.pop()
             continue
 
-        print(r)
-        orig_msg = (r.forward_from_chat.id, r.forward_from_message_id)
+        orig_msg = (r.forward_from_chat.id, r.forward_from_message_id) \
+            if r.forward_from_chat else (chat_id, message_id)
+
         if dbh.onHold(orig_msg):
             continue
 
