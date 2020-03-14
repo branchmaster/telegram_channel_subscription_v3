@@ -6,7 +6,6 @@ import time
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram import InputMediaPhoto
 from db import SUBSCRIPTION
-from db import UPDATE_TIME
 from db import QUEUE
 import threading
 import traceback as tb
@@ -18,7 +17,6 @@ Channel Subscription for channels and groups. Bot needs to be in the subscribed 
 ''')
 
 dbs = SUBSCRIPTION()
-dbu = UPDATE_TIME()
 queue = QUEUE()
 media = {}
 cache = {}
@@ -94,10 +92,7 @@ def command(update, context):
         autoDestroy(msg.reply_text(r, quote=False))
         return
     if 'pause' in command:
-        chat_id = msg.chat_id
-        if chat_id and chat_id < 0 and dbs.getList(chat_id):
-            dbu.setPause(chat_id)
-        autoDestroy(msg.reply_text('success', quote=False))
+        # TODO
         return
 
 def isMeaningfulNew(msg):
@@ -133,8 +128,6 @@ def manage(update, context):
     if (not msg) or (not isMeaningfulNew(msg)):
         return 
     chat_id = msg.chat_id
-    if chat_id and chat_id < 0 and dbs.getList(chat_id):
-        dbu.setTime(chat_id)
     threading.Timer(INTERVAL, addQueue, [msg, chat_id]).start() 
 
 def start(update, context):
@@ -146,7 +139,7 @@ tele.dispatcher.add_handler(MessageHandler(Filters.update.channel_posts and (~Fi
 tele.dispatcher.add_handler(MessageHandler(Filters.private, start))
 
 def isReady(subscriber):
-    return dbu.get(subscriber) + INTERVAL < time.time()
+    return True
 
 def findDup(msg):
     global hashes
@@ -185,7 +178,6 @@ def loopImp():
             dup_msg = findDup(r)
             if dup_msg:
                 tryDeleteById(subscriber, dup_msg)
-            dbu.setTime(subscriber)
         except Exception as e:
             if str(e) not in ['Message to forward not found', 'Message_id_invalid']:
                 print(e)
