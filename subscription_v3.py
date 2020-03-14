@@ -45,6 +45,7 @@ def addHold(update, context):
 
 @log_on_fail(debug_group)
 def manage(update, context):
+    msg = update.channel_posts
     for reciever in dbs.getSubsribers(msg.chat_id):
         queue.append((reciever, msg.chat_id, msg.message_id, msg.media_group_id))
         hold(msg)
@@ -107,7 +108,7 @@ def loopImp():
         if not cache.add((reciever, r.forward_from.chat_id, r.forward_from.message_id)):
             queue_to_push_back.pop()
             continue
-            
+
         for m in forwardMsg(item):
             hold(m)
         hold(r)
