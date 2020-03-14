@@ -41,6 +41,8 @@ def addHold(update, context):
 @log_on_fail(debug_group)
 def manage(update, context):
     msg = update.channel_post
+    if not msg:
+        return
     for reciever in dbs.getSubsribers(msg.chat_id):
         queue.append((reciever, msg.chat_id, msg.message_id, msg.media_group_id))
     hold(msg)
