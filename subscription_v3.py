@@ -28,9 +28,9 @@ def command(update, context):
     handleCommand(update, context, dbs)
 
 def hold(msg):
-    orig_msg = msg.forward_from if msg.forward_from else msg
-    dbh.hold((orig_msg.chat_id, orig_msg.message_id), hold_hour = 5)
-    cache.add((msg.chat_id, orig_msg.chat_id, orig_msg.message_id))
+    orig_msg = (msg.forward_from_chat.id, msg.forward_from_message_id) if msg.forward_from_chat else (msg.chat_id, msg.message_id)
+    dbh.hold(orig_msg, hold_hour = 5)
+    cache.add((msg.chat_id, orig_msg[0], orig_msg[1]))
 
     if msg.chat_id == 1001197970228: # Hack...
         hold_hour = 1
@@ -102,12 +102,11 @@ def loopImp():
             queue_to_push_back.pop()
             continue
 
-        print(r)
-
-        if dbh.onHold((r.forward_from.chat_id, r.forward_from.message_id)):
+        orig_msg = (r.forward_from_chat.id, r.forward_from_message_id)
+        if dbh.onHold(orig_msg):
             continue
 
-        if not cache.add((reciever, r.forward_from.chat_id, r.forward_from.message_id)):
+        if not cache.add((reciever, orig_msg[0], orig_msg[1])):
             queue_to_push_back.pop()
             continue
 
