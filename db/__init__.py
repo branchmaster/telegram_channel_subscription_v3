@@ -56,9 +56,7 @@ class SUBSCRIPTION(object):
         try:
             with open('subscription.yaml') as f:
                 self.SUBSCRIPTION = yaml.load(f, Loader=yaml.FullLoader)
-        except Exception as e:
-            print(e)
-            tb.print_exc()
+        except FileNotFoundError as e:
             self.SUBSCRIPTION = {}
 
     def getList(self, chat_id):
