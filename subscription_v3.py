@@ -101,11 +101,11 @@ def loopImp():
             continue
 
         if not cache.add((reciever, orig_msg[0], orig_msg[1])):
-            queue_to_push_back.pop()
             continue
 
         for m in forwardMsg(item):
             hold(m)
+        queue_to_push_back.pop()
         hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
 
