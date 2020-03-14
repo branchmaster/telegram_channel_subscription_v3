@@ -57,9 +57,12 @@ tele.dispatcher.add_handler(MessageHandler(
 def forwardMsg(item):
     reciever, chat_id, message_id, media_group_id = item
     if not media_group_id:
-        print(item)
-        return [bot.forward_message(chat_id = reciever,
-            from_chat_id = chat_id, message_id = message_id)]
+        try:
+            return [bot.forward_message(chat_id = reciever,
+                from_chat_id = chat_id, message_id = message_id)]
+        except Exception as e:
+            print(item)
+            raise e
     media = []
     for mid in queue.pop_all(reciever, chat_id, media_group_id) + [message_id]:
         try:
