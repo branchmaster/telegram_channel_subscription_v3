@@ -5,8 +5,7 @@ import yaml
 import time
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram import InputMediaPhoto
-from db import SUBSCRIPTION
-from db import QUEUE
+from db import SUBSCRIPTION, QUEUE, HOLD, CACHE
 import threading
 import traceback as tb
 from telegram_util import log_on_fail
@@ -14,7 +13,8 @@ from command import handleCommand
 
 dbs = SUBSCRIPTION()
 queue = QUEUE()
-media = {}
+dbh = HOLD()
+cache = CACHE()
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -29,16 +29,15 @@ INTERVAL = 60 * 60
 def command(update, context):
     handleCommand(update, context, dbs)
 
+@log_on_fail(debug_group)
 def addHold(update, context):
-    return
+    msg = update.message
+    if msg:
+        dbh.hold(msg.chat_id, msg)
 
 @log_on_fail(debug_group)
-def addQueueImp(msg):
+def addQueue(msg):
     if not dbs.getSubsribers(msg.chat_id):
-        return
-    try:
-        msg.forward(debug_group.id)
-    except:
         return
     for reciever in dbs.getSubsribers(msg.chat_id):
         queue.append((reciever, msg.chat_id, msg.message_id, msg.media_group_id)) 
@@ -51,9 +50,6 @@ def addQueueImp(msg):
         #     if msg.photo[-1].file_id not in [x.media for x in media[msg.media_group_id]]:
         #         imp = InputMediaPhoto(msg.photo[-1].file_id, caption=msg.caption_markdown, parse_mode='Markdown')
         #         media[msg.media_group_id].append(imp)
-
-def addQueue(msg):
-    addQueueImp(msg)
 
 @log_on_fail(debug_group)
 def manage(update, context):
@@ -69,12 +65,22 @@ tele.dispatcher.add_handler(MessageHandler(
 @log_on_fail(debug_group)
 def loopImp():
     queue_to_push_back = []
-    forwarded = set()
     while not queue.empty():
         item = queue.pop()
-        reciever, chat_id, message_id = item
-        if (chat_id, message_id) in forwarded:
+        reciever, chat_id, message_id, media_group_id = item
+        if dbh.onHold(reciever) or dbh.onHold((chat_id, message_id)):
             queue_to_push_back.append(item)
+            continue
+        try:
+            r = bot.forward_message(
+                chat_id = debug_group.id, 
+                from_chat_id = chat_id,
+                message_id = message_id)
+            r.delete()
+            if not cache.add((reciever, r.forward_from.chat_id, r.forward_from.message_id)):
+                continue
+        except Exception e:
+            print(e) # debug
             continue
         forwarded.add((chat_id, message_id))
         try:
@@ -87,11 +93,10 @@ def loopImp():
                     from_chat_id = chat_id,
                     message_id = message_id)
         except Exception as e:
-            if str(e) not in ['Message to forward not found', 'Message_id_invalid']:
-                tb.print_exc()
-                print(item)
-                debug_group.send_message(str(e))
-                queue_to_push_back.append(item)
+            tb.print_exc()
+            print(item)
+            debug_group.send_message(str(e))
+            queue_to_push_back.append(item)
     queue.replace(queue_to_push_back)
 
 def loop():

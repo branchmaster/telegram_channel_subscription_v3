@@ -2,6 +2,16 @@ import traceback as tb
 import yaml
 import time
 
+class CACHE(object):
+    def __init__(self):
+        self.cache = set()
+
+    def add(self, x):
+        if x in self.cache:
+            return False
+        self.cache.add(x)
+        return True
+
 class QUEUE(object):
     def __init__(self):
         try:
