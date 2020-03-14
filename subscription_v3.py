@@ -104,7 +104,7 @@ def loopImp():
         for m in forwardMsg(item):
             hold(m)
         hold(r)
-    queue.replace(queue_to_push_back)
+    queue.replace(queue_to_push_back[::-1]) # preserve order
 
 def loop():
     loopImp()
