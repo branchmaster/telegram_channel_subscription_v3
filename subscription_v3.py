@@ -90,20 +90,27 @@ def loopImp():
         reciever, chat_id, message_id, media_group_id = item
         if dbh.onHold(reciever):
             continue
+        
         try:
             r = bot.forward_message(
                 chat_id = debug_group.id, 
                 from_chat_id = chat_id,
                 message_id = message_id)
             r.delete()
-            if dbh.onHold((r.forward_from.chat_id, r.forward_from.message_id)):
-                continue
-            if not cache.add((reciever, r.forward_from.chat_id, r.forward_from.message_id)):
-                queue_to_push_back.pop()
-                continue
-        hold(r)
+        except:
+            queue_to_push_back.pop()
+            continue
+
+        if dbh.onHold((r.forward_from.chat_id, r.forward_from.message_id)):
+            continue
+
+        if not cache.add((reciever, r.forward_from.chat_id, r.forward_from.message_id)):
+            queue_to_push_back.pop()
+            continue
+            
         for m in forwardMsg(item):
             hold(m)
+        hold(r)
     queue.replace(queue_to_push_back)
 
 def loop():
