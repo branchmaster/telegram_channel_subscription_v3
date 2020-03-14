@@ -1,6 +1,31 @@
-import traceback as tb
-import yaml
 import time
+import yaml
+
+HOUR = 1 # 60 * 60
+
+class HOLD(object):
+    def __init__(self):
+        self.hold = {}
+
+    def hold(self, x, msg=None, hold_hour = 1):
+        self.hold[x] = self.hold.get(x, [])
+        self.hold[x].append((time.time() + hold_hour * HOUR, msg))
+
+    def onHold(self, x):
+        return not not self.hold.get(x)
+
+    def clearHold(self, debug_group):
+        for x in self.hold:
+            while self.hold[x]:
+                t, msg = self.hold[x].pop()
+                if t > time.time():
+                    continue
+                try:
+                    r = msg.forward_message(debug_group.id)
+                    r.delete()
+                except:
+                    continue
+                break
 
 class CACHE(object):
     def __init__(self):
