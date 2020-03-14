@@ -7,9 +7,7 @@ class QUEUE(object):
         try:
             with open('queue.yaml') as f:
                 self.queue = yaml.load(f, Loader=yaml.FullLoader)
-        except Exception as e:
-            print(e)
-            tb.print_exc()
+        except FileNotFoundError as e:
             self.queue = []
 
     def append(self, x):
