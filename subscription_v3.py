@@ -27,15 +27,11 @@ hashes = {}
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
 
-with open('config') as f:
-    config = yaml.load(f, Loader=yaml.FullLoader)
-
 test_channel = -1001459876114
-m_interval = config['message_interval_min']
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
 
-INTERVAL = m_interval * 60
+INTERVAL = 60 * 60
 
 def tryDeleteById(chat_id, msg_id):
     try:
@@ -108,14 +104,12 @@ def isMeaningfulNew(msg):
     return not not msg.media_group_id
 
 @log_on_fail(debug_group)
-def manage(update, context):
+def addQueueImp(msg, chat_id):
     global queue
-    msg = update.channel_post
-    if (not msg) or (not isMeaningfulNew(msg)):
-        return 
-    chat_id = msg.chat_id
-    if chat_id and chat_id < 0 and dbs.getList(chat_id):
-        dbu.setTime(chat_id)
+    try:
+        msg.forward(debug_group.id)
+    except:
+        pass
     for subscriber in dbs.getSubsribers(chat_id)[::-1]:
         if msg.media_group_id:
             if (subscriber, msg.chat_id, msg.media_group_id) not in queue.queue:
@@ -126,6 +120,20 @@ def manage(update, context):
                 media[msg.media_group_id].append(imp)
         else:
             queue.append((subscriber, msg.chat_id, msg.message_id)) 
+
+def addQueue(msg, chat_id):
+    addQueueImp(msg, chat_id)
+
+@log_on_fail(debug_group)
+def manage(update, context):
+    global queue
+    msg = update.channel_post
+    if (not msg) or (not isMeaningfulNew(msg)):
+        return 
+    chat_id = msg.chat_id
+    if chat_id and chat_id < 0 and dbs.getList(chat_id):
+        dbu.setTime(chat_id)
+    threading.Timer(INTERVAL, addQueue, [msg, chat_id]).start() 
 
 def start(update, context):
     if update.message:
