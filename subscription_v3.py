@@ -9,18 +9,11 @@ from db import SUBSCRIPTION
 from db import QUEUE
 import threading
 import traceback as tb
-import hashlib
 from telegram_util import isMeaningful, splitCommand, log_on_fail, autoDestroy
-
-START_MESSAGE = ('''
-Channel Subscription for channels and groups. Bot needs to be in the subscribed channel.
-''')
 
 dbs = SUBSCRIPTION()
 queue = QUEUE()
 media = {}
-cache = {}
-hashes = {}
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -30,14 +23,6 @@ tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
 
 INTERVAL = 60 * 60
-
-def tryDeleteById(chat_id, msg_id):
-    try:
-        print('tryDeleteById', chat_id, msg_id)
-        tele.bot.delete_message(chat_id = chat_id, message_id = msg_id)
-        print('DeletedById', chat_id, msg_id)
-    except:
-        pass
 
 def getChat(raw, msg):
     raw = str(raw).strip().split('/')[-1]
@@ -130,25 +115,11 @@ def manage(update, context):
     chat_id = msg.chat_id
     threading.Timer(INTERVAL, addQueue, [msg, chat_id]).start() 
 
-def start(update, context):
-    if update.message:
-        update.message.reply_text(START_MESSAGE)
-
 tele.dispatcher.add_handler(MessageHandler((~Filters.private) and (Filters.command), command))
 tele.dispatcher.add_handler(MessageHandler(Filters.update.channel_posts and (~Filters.command), manage))
-tele.dispatcher.add_handler(MessageHandler(Filters.private, start))
 
 def isReady(subscriber):
     return True
-
-def findDup(msg):
-    global hashes
-    s = str(msg.chat_id) + str(msg.text) + str(msg.photo)
-    s = s.encode('utf-8')
-    h = hashlib.sha224(s).hexdigest()
-    if h in hashes:
-        return hashes[h]
-    hashes[h] = msg.message_id
 
 @log_on_fail(debug_group)
 def loopImp():
@@ -164,8 +135,6 @@ def loopImp():
             continue
         forwarded.add((chat_id, message_id))
         try:
-            if item in cache:
-                tryDeleteById(subscriber, cache[item])
             if message_id in media:
                 debug_group.send_message(len(media[message_id]))
                 r = tele.bot.send_media_group(subscriber, media[message_id])[0]
@@ -174,10 +143,6 @@ def loopImp():
                     chat_id = subscriber,
                     from_chat_id = chat_id,
                     message_id = message_id)
-            cache[item] = r.message_id
-            dup_msg = findDup(r)
-            if dup_msg:
-                tryDeleteById(subscriber, dup_msg)
         except Exception as e:
             if str(e) not in ['Message to forward not found', 'Message_id_invalid']:
                 print(e)
