@@ -30,7 +30,7 @@ def command(update, context):
 def hold(msg):
     orig_msg = msg.forward_from if msg.forward_from else msg
     dbh.hold((orig_msg.chat_id, orig_msg.message_id), hold_hour = 5)
-    cache.add((msg.chat_id, orig_msg.chat_id, orig_msg.forward_from.message_id))
+    cache.add((msg.chat_id, orig_msg.chat_id, orig_msg.message_id))
 
     if msg.chat_id == 1001197970228: # Hack...
         hold_hour = 1
@@ -48,7 +48,7 @@ def manage(update, context):
     msg = update.channel_post
     for reciever in dbs.getSubsribers(msg.chat_id):
         queue.append((reciever, msg.chat_id, msg.message_id, msg.media_group_id))
-        hold(msg)
+    hold(msg)
 
 tele.dispatcher.add_handler(MessageHandler(
     (~Filters.private) & Filters.command, command))
@@ -101,6 +101,8 @@ def loopImp():
         except:
             queue_to_push_back.pop()
             continue
+
+        print(r)
 
         if dbh.onHold((r.forward_from.chat_id, r.forward_from.message_id)):
             continue
