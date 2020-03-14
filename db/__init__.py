@@ -26,31 +26,6 @@ class QUEUE(object):
         with open('queue.yaml', 'w') as f:
             f.write(yaml.dump(self.queue, sort_keys=True, indent=2))
 
-class UPDATE_TIME(object):
-    def __init__(self):
-        try:
-            with open('update_time.yaml') as f:
-                self.UPDATE_TIME = yaml.load(f, Loader=yaml.FullLoader)
-        except Exception as e:
-            print(e)
-            tb.print_exc()
-            self.UPDATE_TIME = {}
-
-    def setTime(self, chat_id):
-        self.UPDATE_TIME[chat_id] = time.time()
-        self.save()
-
-    def setPause(self, chat_id):
-        self.UPDATE_TIME[chat_id] = time.time() + 4 * 60 * 60
-        self.save()
-
-    def get(self, chat_id):
-        return self.UPDATE_TIME.get(chat_id, 0)
-
-    def save(self):
-        with open('update_time.yaml', 'w') as f:
-            f.write(yaml.dump(self.UPDATE_TIME, sort_keys=True, indent=2))
-
 class SUBSCRIPTION(object):
     def __init__(self):
         try:
