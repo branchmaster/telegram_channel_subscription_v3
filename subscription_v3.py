@@ -63,7 +63,7 @@ def forwardMsg(item):
             r = bot.forward_message(chat_id = debug_group.id, 
                 from_chat_id = chat_id, message_id = mid)
             r.delete()
-        except:
+        except Exception as e:
             pass
         if r.photo[-1].file_id not in [x.media for x in media]:
             media.append(InputMediaPhoto(r.photo[-1].file_id, 
