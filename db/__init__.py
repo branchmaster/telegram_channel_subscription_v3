@@ -82,6 +82,14 @@ class SUBSCRIPTION(object):
     def getList(self, chat_id):
         return self.SUBSCRIPTION.get(chat_id, [])
 
+    def getAll(self):
+        r = set()
+        for x in self.SUBSCRIPTION:
+            r.add(x)
+            for y in self.SUBSCRIPTION[x]:
+                r.add(y['id'])
+        return r
+
     def deleteIndex(self, chat_id, index):
         try:
             del self.SUBSCRIPTION[chat_id][index]

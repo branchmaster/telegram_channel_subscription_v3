@@ -35,9 +35,8 @@ def handleCommand(update, context, dbs):
         r = dbs.add(msg.chat_id, chat.to_dict())
         autoDestroy(msg.reply_text(r, quote=False))
         return
-    if 'pause' in command:
-        # TODO
-        return
-    if 'send_all' in command:
-        # TODO
+    if 'all' in command:
+        for reciever in dbs.getAll():
+            if int(reciever) != msg.chat_id:
+                msg.reply_to_message.forward(reciever)
         return
