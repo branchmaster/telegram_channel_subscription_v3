@@ -17,8 +17,7 @@ media = {}
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
-
-test_channel = -1001459876114
+    
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
 
