@@ -74,8 +74,12 @@ def forwardMsg(item):
         except Exception as e:
             pass
         if r.photo[-1].file_id not in [x.media for x in media]:
-            media.append(InputMediaPhoto(r.photo[-1].file_id, 
-                caption=r.caption_markdown, parse_mode='Markdown'))
+            m = InputMediaPhoto(r.photo[-1].file_id, 
+                caption=r.caption_markdown, parse_mode='Markdown')
+            if r.caption_markdown:
+                media = [m] + media
+            else:
+                media.append(m)
     if media:
         return bot.send_media_group(reciever, media)
     return []
