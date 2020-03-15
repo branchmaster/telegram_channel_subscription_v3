@@ -25,6 +25,7 @@ class HOLD(object):
                     r.delete()
                 except:
                     continue
+                self.holds[x].append((t, msg))
                 break
 
 class CACHE(object):
