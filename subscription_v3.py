@@ -13,6 +13,7 @@ dbs = SUBSCRIPTION()
 queue = QUEUE()
 dbh = HOLD()
 cache = CACHE()
+count_loop = 0
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -112,16 +113,21 @@ def loopImp():
             continue
 
         if not cache.add((reciever, orig_msg[0], orig_msg[1])):
+            queue_to_push_back.pop()
             continue
 
         for m in forwardMsg(item):
             hold(m)
-        dbh.hold(media_group_id, hold_hour = 5)
+        if media_group_id:
+            dbh.hold(media_group_id, hold_hour = 5)
         queue_to_push_back.pop()
         hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
 
 def loop():
+    global count_loop
+    print('count loop', count_loop)
+    count_loop += 1
     loopImp()
     threading.Timer(HOUR, loop).start() 
 
