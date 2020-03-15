@@ -13,7 +13,6 @@ dbs = SUBSCRIPTION()
 queue = QUEUE()
 dbh = HOLD()
 cache = CACHE()
-count_loop = 0
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -125,9 +124,6 @@ def loopImp():
     queue.replace(queue_to_push_back[::-1]) # preserve order
 
 def loop():
-    global count_loop
-    print('count loop', count_loop)
-    count_loop += 1
     loopImp()
     threading.Timer(HOUR, loop).start() 
 
