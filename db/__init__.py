@@ -18,7 +18,7 @@ class HOLD(object):
         for x in self.holds:
             while self.holds[x]:
                 t, msg = self.holds[x].pop()
-                if t > time.time():
+                if t < time.time():
                     continue
                 try:
                     r = msg.forward_message(debug_group.id)
