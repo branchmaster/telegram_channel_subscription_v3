@@ -29,7 +29,7 @@ def hold(msg):
     orig_msg = (msg.forward_from_chat.id, msg.forward_from_message_id) if msg.forward_from_chat else (msg.chat_id, msg.message_id)
     dbh.hold(orig_msg, hold_hour = 5)
     if msg.media_group_id:
-        dbh.hold(media_group_id, hold_hour = 5)
+        dbh.hold(msg.media_group_id, hold_hour = 5)
     cache.add((msg.chat_id, orig_msg[0], orig_msg[1]))
 
     hold_hour = 1 if msg.chat_id == 1001197970228 else 3 # Hack...
