@@ -28,6 +28,8 @@ def command(update, context):
 def hold(msg):
     orig_msg = (msg.forward_from_chat.id, msg.forward_from_message_id) if msg.forward_from_chat else (msg.chat_id, msg.message_id)
     dbh.hold(orig_msg, hold_hour = 5)
+    if msg.media_group_id:
+        dbh.hold(media_group_id, hold_hour = 5)
     cache.add((msg.chat_id, orig_msg[0], orig_msg[1]))
 
     hold_hour = 1 if msg.chat_id == 1001197970228 else 3 # Hack...
@@ -88,6 +90,8 @@ def loopImp():
         reciever, chat_id, message_id, media_group_id = item
         if dbh.onHold(reciever):
             continue
+        if media_group_id and dbh.onHold(media_group_id):
+            continue
         
         try:
             r = bot.forward_message(chat_id = debug_group.id, 
@@ -108,6 +112,7 @@ def loopImp():
 
         for m in forwardMsg(item):
             hold(m)
+        dbh.hold(media_group_id, hold_hour = 5)
         queue_to_push_back.pop()
         hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
