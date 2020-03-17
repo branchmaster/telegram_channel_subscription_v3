@@ -1,5 +1,6 @@
 import time
 import yaml
+import os
 
 HOUR = 20 # 60 * 60
 
@@ -10,7 +11,6 @@ class HOLD(object):
     def hold(self, x, msg=None, hold_hour = 1):
         self.holds[x] = self.holds.get(x, [])
         self.holds[x].append((time.time() + hold_hour * HOUR, msg))
-        print('hold', x, len(self.holds[x]))
 
     def onHold(self, x):
         return not not self.holds.get(x)
@@ -20,14 +20,12 @@ class HOLD(object):
             while self.holds[x]:
                 t, msg = self.holds[x].pop()
                 if t < time.time():
-                    print('unhold timeout', x, len(self.holds[x]))
                     continue
                 if msg:
                     try:
                         r = msg.forward_message(debug_group.id)
                         r.delete()
                     except Exception as e:
-                        print('unhold msg delete', x, len(self.holds[x]))
                         continue
                 self.holds[x].append((t, msg))
                 break
@@ -73,8 +71,9 @@ class QUEUE(object):
         return len(self.queue) == 0
 
     def save(self):
-        with open('queue.yaml', 'w') as f:
+        with open('queue_tmp.yaml', 'w') as f:
             f.write(yaml.dump(self.queue, sort_keys=True, indent=2))
+        os.system('mv queue_tmp.yaml queue.yaml')
 
 class SUBSCRIPTION(object):
     def __init__(self):
