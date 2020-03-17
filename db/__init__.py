@@ -2,7 +2,7 @@ import time
 import yaml
 import os
 
-HOUR = 20 # 60 * 60
+HOUR = 60 * 60
 
 class HOLD(object):
     def __init__(self):
