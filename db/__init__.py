@@ -1,8 +1,12 @@
 import time
 import yaml
 import os
+import sys
 
-HOUR = 60 * 60
+if 'test' in str(sys.argv):
+    HOUR = 20
+else:
+    HOUR = 60 * 60
 
 class HOLD(object):
     def __init__(self):
@@ -26,6 +30,8 @@ class HOLD(object):
                         r = msg.forward_message(debug_group.id)
                         r.delete()
                     except Exception as e:
+                        if 'test' in str(sys.argv):
+                            print(str(e))
                         continue
                 self.holds[x].append((t, msg))
                 break

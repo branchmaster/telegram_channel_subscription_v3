@@ -92,6 +92,8 @@ def loopImp():
         item = queue.pop()
         queue_to_push_back.append(item)
         reciever, chat_id, message_id, media_group_id = item
+        if 'test' in str(sys.argv) and reciever != -1001197970228:
+            continue
         if dbh.onHold(reciever):
             continue
         if media_group_id and dbh.onHold(media_group_id):
@@ -123,7 +125,12 @@ def loopImp():
         hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
 
+loop_count = 0
 def loop():
+    global loop_count
+    if 'test' in str(sys.argv):
+        print('loop', loop_count)
+    loop_count += 1
     loopImp()
     threading.Timer(HOUR, loop).start() 
 
