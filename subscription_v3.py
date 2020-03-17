@@ -123,7 +123,11 @@ def loopImp():
         hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
 
+c = 0
 def loop():
+    global c
+    print('loop', c)
+    c += 1
     loopImp()
     threading.Timer(HOUR, loop).start() 
 

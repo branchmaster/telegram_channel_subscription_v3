@@ -1,7 +1,7 @@
 import time
 import yaml
 
-HOUR = 60 * 60
+HOUR = 20 # 60 * 60
 
 class HOLD(object):
     def __init__(self):
@@ -10,6 +10,7 @@ class HOLD(object):
     def hold(self, x, msg=None, hold_hour = 1):
         self.holds[x] = self.holds.get(x, [])
         self.holds[x].append((time.time() + hold_hour * HOUR, msg))
+        print('hold', x, len(self.holds[x]))
 
     def onHold(self, x):
         return not not self.holds.get(x)
@@ -19,12 +20,14 @@ class HOLD(object):
             while self.holds[x]:
                 t, msg = self.holds[x].pop()
                 if t < time.time():
+                    print('unhold timeout', x, len(self.holds[x]))
                     continue
                 if msg:
                     try:
                         r = msg.forward_message(debug_group.id)
                         r.delete()
                     except Exception as e:
+                        print('unhold msg delete', x, len(self.holds[x]))
                         continue
                 self.holds[x].append((t, msg))
                 break
