@@ -36,7 +36,16 @@ def handleCommand(update, context, dbs):
         autoDestroy(msg.reply_text(r, quote=False))
         return
     if 'all' in command:
+        # untested code
+        to_forward = msg.reply_to_message
         for reciever in dbs.getAll():
             if int(reciever) != msg.chat_id:
-                msg.reply_to_message.forward(reciever)
+                if to_forward.text_markdown:
+                    msg.bot.send_message(reciever, to_forward.text_markdown, 
+                        parse_mode='Markdown')
+                elif to_forward.photo:
+                    msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
+                        cap=to_forward.caption_markdown, parse_mode='Markdown')
+                else:
+                    to_forward.forward(reciever)
         return
