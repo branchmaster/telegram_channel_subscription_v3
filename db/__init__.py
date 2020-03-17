@@ -27,11 +27,9 @@ class HOLD(object):
                     continue
                 if msg:
                     try:
-                        r = msg.forward_message(debug_group.id)
+                        r = msg.forward(debug_group.id)
                         r.delete()
                     except Exception as e:
-                        if 'test' in str(sys.argv):
-                            print(str(e))
                         continue
                 self.holds[x].append((t, msg))
                 break

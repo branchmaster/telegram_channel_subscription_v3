@@ -8,6 +8,7 @@ from db import SUBSCRIPTION, QUEUE, HOLD, CACHE, HOUR
 import threading
 from telegram_util import log_on_fail
 from command import handleCommand
+import sys
 
 dbs = SUBSCRIPTION()
 queue = QUEUE()
