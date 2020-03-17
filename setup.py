@@ -18,11 +18,6 @@ def setup(arg = ''):
 			os.system('sudo python3 get-pip.py')
 			os.system('rm get-pip.py')
 			os.system('pip3 install --user -r requirements.txt')
-		
-	try:
-		from telegram.ext import Updater, MessageHandler, Filters
-	except:
-		os.system('pip3 install --user python-telegram-bot --upgrade') # need to use some experiement feature, e.g. message filtering
 
 	kill()
 	if arg.startswith('debug'):
