@@ -60,4 +60,7 @@ def handleCommand(update, context, dbs):
         to_delete = msg.reply_to_message
         key = (to_delete.chat_id, to_delete.message_id)
         for r in forward_all_record[key]:
-            r.delete()
+            try:
+                r.delete()
+            except:
+                pass
