@@ -1,5 +1,7 @@
 from telegram_util import splitCommand, autoDestroy, getChat
 
+forward_all_record = {}
+
 def formatSubscription(s):
     return '[' + s['title'] + '](t.me/' + str(s.get('username')) + ')'
 
@@ -36,16 +38,26 @@ def handleCommand(update, context, dbs):
         autoDestroy(msg.reply_text(r, quote=False))
         return
     if 'all' in command:
+        global forward_all_record
         # untested code
         to_forward = msg.reply_to_message
+        key = (to_forward.chat_id, to_forward.message_id)
+        if key not in forward_all_record:
+            forward_all_record[key] = []
         for reciever in dbs.getAll():
             if int(reciever) != msg.chat_id:
                 if to_forward.text_markdown:
-                    msg.bot.send_message(reciever, to_forward.text_markdown, 
+                    r = msg.bot.send_message(reciever, to_forward.text_markdown, 
                         parse_mode='Markdown')
                 elif to_forward.photo:
-                    msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
+                    r = msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
                         cap=to_forward.caption_markdown, parse_mode='Markdown')
                 else:
-                    to_forward.forward(reciever)
+                    r = to_forward.forward(reciever)
+                forward_all_record[key].append(r)
         return
+    if 'delete' in command:
+        to_delete = msg.reply_to_message
+        key = (to_delete.chat_id, to_delete.message_id)
+        for r in forward_all_record[key]:
+            r.delete()
