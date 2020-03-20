@@ -45,7 +45,8 @@ def handleCommand(update, context, dbs):
         for reciever in dbs.getAll():
             if int(reciever) != msg.chat_id:
                 print(to_forward)
-                print(to_forward.photo[-1].caption_markdown)
+                print(to_forward.caption_markdown)
+                print(to_forward.caption)
                 return
                 if to_forward.text_markdown:
                     r = msg.bot.send_message(reciever, to_forward.text_markdown, 
