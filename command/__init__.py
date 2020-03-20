@@ -44,16 +44,12 @@ def handleCommand(update, context, dbs):
             forward_all_record[key] = []
         for reciever in dbs.getAll():
             if int(reciever) != msg.chat_id:
-                print(to_forward)
-                print(to_forward.caption_markdown)
-                print(to_forward.caption)
-                return
                 if to_forward.text_markdown:
                     r = msg.bot.send_message(reciever, to_forward.text_markdown, 
                         parse_mode='Markdown')
                 elif to_forward.photo:
                     r = msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
-                        cap=to_forward.photo[-1].caption_markdown, parse_mode='Markdown')
+                        caption=to_forward.photo[-1].caption_markdown, parse_mode='Markdown')
                 else:
                     r = to_forward.forward(reciever)
                 forward_all_record[key].append(r)
