@@ -25,6 +25,100 @@
   title: "\u6027\u522B\u504F\u89C1\u56FE\u9274"
   type: channel
   username: daily_feminist
+- description: "Keywords: \u653F\u6CBB \u6C11\u4E3B \u81EA\u7531 \u89C2\u5BDF \u6C11\
+    \u751F \u8BA8\u8BBA \u65F6\u4E8B \u793E\u4F1A\n\n\u7FA4\u7EC4\u63A8\u8350\uFF1A\
+    \n\n \u65B0\u95FB\u64AD\u62A5 @news_pdf\n \u5E73\u6743\u89C2\u5BDF @equality_and_rights\n\
+    \ \u82F1\u6587\u5B66\u4E60 @english_learning_discuss\n \u6587\u674F\u9986\uFF0C\
+    \u4E66\u7C4D\u63A8\u8350 @BooksThatMakeYouThink\n \u884C\u52A8\u6D3E\u516C\u6C11\
+    \u8054\u76DF @citizen_united\n \u653F\u6CBB\u89C2\u5BDF @freedom_watch\n \u8BFB\
+    \u4E66\u5206\u4EAB @dushufenxiang\n \u8BFB\u4E66\u8BA8\u8BBA @dushufenxiang_chat"
+  id: -1001286091818
+  photo:
+    big_file_id: AQADAQATV9RuBgAEAwAD1ruy3hb___8HW0UKO5qs-CKCAAIYBA
+    small_file_id: AQADAQATV9RuBgAEAgAD1ruy3hb___8HW0UKO5qs-CCCAAIYBA
+  pinned_message:
+    caption_entities: []
+    channel_chat_created: false
+    chat:
+      id: -1001286091818
+      title: "\u653F\u6CBB\u89C2\u5BDF"
+      type: channel
+      username: freedom_watch
+    date: 1584450280
+    delete_chat_photo: false
+    entities:
+    - length: 20
+      offset: 16
+      type: mention
+    - length: 25
+      offset: 46
+      type: mention
+    - length: 15
+      offset: 84
+      type: mention
+    - length: 14
+      offset: 109
+      type: mention
+    - length: 14
+      offset: 133
+      type: mention
+    - length: 15
+      offset: 156
+      type: mention
+    - length: 22
+      offset: 180
+      type: mention
+    - length: 22
+      offset: 213
+      type: mention
+    - length: 9
+      offset: 245
+      type: mention
+    - length: 12
+      offset: 264
+      type: mention
+    - length: 19
+      offset: 286
+      type: mention
+    - length: 15
+      offset: 315
+      type: mention
+    - length: 9
+      offset: 340
+      type: mention
+    - length: 16
+      offset: 359
+      type: mention
+    - length: 15
+      offset: 385
+      type: mention
+    forward_date: 1584450257
+    forward_from_chat:
+      id: -1001445981123
+      title: "\u8BFB\u4E66\u5206\u4EAB"
+      type: channel
+      username: dushufenxiang
+    forward_from_message_id: 461
+    group_chat_created: false
+    message_id: 160
+    new_chat_members: []
+    new_chat_photo: []
+    photo: []
+    supergroup_chat_created: false
+    text: "\u7FA4\u7EC4\u63A8\u8350\uFF1A\n\n    \u5E73\u6743\u89C2\u5BDF @equality_and_rights\n\
+      \    \u82F1\u6587\u5B66\u4E60 @english_learning_discuss\n    \u884C\u52A8\u6D3E\
+      \u516C\u6C11\u8054\u76DF @citizen_united\n    \u653F\u6CBB\u89C2\u5BDF @freedom_watch\n\
+      \    \u8BFB\u4E66\u5206\u4EAB @dushufenxiang\n    \u86CB\u631E\u62A5 @pincongessence\n\
+      \    \u6587\u674F\u9986 @BooksThatMakeYouThink\n    \u7A0B\u5E8F\u5458\u4E4B\
+      \u5BB6 @useless_project_ideas\n    \u65B0\u95FB\u64AD\u62A5 @news_pdf\n    \u8C46\
+      \u74E3\u7CBE\u9009 @douban_read\n    \u8BFB\u4E66\u8BA8\u8BBA @dushufenxiang_chat\n\
+      \    \u5973\u6743\u89C2\u5BDF @feminist_watch\n    \u7F51\u6458\u7CBE\u9009\
+      \ @web_feed\n    \u5199\u4F5C\u4EA4\u6D41 @writing_discuss\n    \u6027\u522B\
+      \u8BAE\u9898 @daily_feminist\n    \u52A0\u5FAE\u4FE1\u8BFB\u4E66\u7FA4\u8BF7\
+      \u8054\u7CFB\u5FAE\u4FE1\uFF1Afenxiangdushu"
+  title: "\u653F\u6CBB\u89C2\u5BDF"
+  type: channel
+  username: freedom_watch
 -1001369425802:
 - id: -1001409716127
   title: "\u5E73\u6743\u89C2\u5BDF"
