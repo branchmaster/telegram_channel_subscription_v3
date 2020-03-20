@@ -1,13 +1,6 @@
--1001445981123:
-- id: -1001241147938
-  username: books_and_reads
--1001414226421:
-- id: -1001402599670
-  username: social_justice_watch
-- id: -1001241147938
-  username: books_and_reads
-- id: -1001187025732
-  username: podcasts_discuss
+-1001282758208:
+- id: -1001474132510
+  username: daily_feminist
 -1001409716127:
 - id: -1001402599670
   username: social_justice_watch
@@ -15,11 +8,6 @@
   username: daily_feminist
 - id: -1001286091818
   username: freedom_watch
--1001369425802:
-- id: -1001409716127
-  username: equality_and_rights
-- id: -1001474132510
-  username: daily_feminist
 -1001368792927:
 - id: -1001219207617
   username: citizen_united
@@ -29,27 +17,35 @@
   username: equality_and_rights
 - id: -1001474132510
   username: daily_feminist
--1001282758208:
-- id: -1001474132510
-  username: daily_feminist
--1001199060777:
-- id: -1001219207617
-  username: citizen_united
-- id: -1001286091818
-  username: freedom_watch
-- id: -1001409716127
-  username: equality_and_rights
-- id: -1001474132510
-  username: daily_feminist
--1001198006031:
-- id: -1001219207617
-  username: citizen_united
-- id: -1001286091818
-  username: freedom_watch
-- id: -1001409716127
-  username: equality_and_rights
-- id: -1001474132510
-  username: daily_feminist
+? !!python/object:telegram.chat.Chat
+  _id_attrs: !!python/tuple
+  - -1001371029868
+  all_members_are_administrators: null
+  bot: !!python/object/apply:telegram.bot.Bot
+  - 895724230:AAHaNMmmtjvIGNDs8YJ6bD2bekQhi8woNdU
+  - https://api.telegram.org/bot
+  - https://api.telegram.org/file/bot
+  can_set_sticker_set: null
+  description: null
+  first_name: null
+  id: -1001371029868
+  invite_link: null
+  last_name: null
+  permissions: null
+  photo: null
+  pinned_message: null
+  sticker_set_name: null
+  title: "\u65B0\u95FB\u64AD\u62A5PDF"
+  type: channel
+  username: news_pdf
+: []
+-1001414226421:
+- id: -1001402599670
+  username: social_justice_watch
+- id: -1001241147938
+  username: books_and_reads
+- id: -1001187025732
+  username: podcasts_discuss
 -1001197970228:
 - id: -1001409716127
   username: equality_and_rights
@@ -74,3 +70,29 @@
   username: freedom_watch
 - id: -1001474132510
   username: daily_feminist
+-1001198006031:
+- id: -1001219207617
+  username: citizen_united
+- id: -1001286091818
+  username: freedom_watch
+- id: -1001409716127
+  username: equality_and_rights
+- id: -1001474132510
+  username: daily_feminist
+-1001369425802:
+- id: -1001409716127
+  username: equality_and_rights
+- id: -1001474132510
+  username: daily_feminist
+-1001199060777:
+- id: -1001219207617
+  username: citizen_united
+- id: -1001286091818
+  username: freedom_watch
+- id: -1001409716127
+  username: equality_and_rights
+- id: -1001474132510
+  username: daily_feminist
+-1001445981123:
+- id: -1001241147938
+  username: books_and_reads
