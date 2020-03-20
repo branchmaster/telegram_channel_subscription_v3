@@ -44,6 +44,8 @@ def handleCommand(update, context, dbs):
             forward_all_record[key] = []
         for reciever in dbs.getAll():
             if int(reciever) != msg.chat_id:
+                print(to_forward)
+                return
                 if to_forward.text_markdown:
                     r = msg.bot.send_message(reciever, to_forward.text_markdown, 
                         parse_mode='Markdown')
