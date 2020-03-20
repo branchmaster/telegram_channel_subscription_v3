@@ -49,7 +49,7 @@ def handleCommand(update, context, dbs):
                         parse_mode='Markdown')
                 elif to_forward.photo:
                     r = msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
-                        caption=to_forward.photo[-1].caption_markdown, parse_mode='Markdown')
+                        caption=to_forward.caption_markdown, parse_mode='Markdown')
                 else:
                     r = to_forward.forward(reciever)
                 forward_all_record[key].append(r)
