@@ -44,6 +44,18 @@ class CACHE(object):
         self.cache.add(x)
         return True
 
+def getSenderDict(chat):
+    if chat.username:
+        return {
+            'id': chat.id,
+            'username': chat.username,
+        }
+    return {
+        'id': chat.id,
+        'title': chat.title,
+    }
+
+
 class QUEUE(object):
     def __init__(self):
         try:
@@ -120,11 +132,11 @@ class SUBSCRIPTION(object):
             self.SUBSCRIPTION[chat_id] = []
             self.save()
 
-    def add(self, chat_id, chat):
-        self.SUBSCRIPTION[chat_id] = self.SUBSCRIPTION.get(chat_id, [])
-        if chat['id'] in [x['id'] for x in self.SUBSCRIPTION[chat_id]]:
+    def add(self, reciever, sender):
+        self.SUBSCRIPTION[reciever.id] = self.SUBSCRIPTION.get(reciever.id, [])
+        if sender.id in [x['id'] for x in self.SUBSCRIPTION[reciever.id]]:
             return 'FAIL: subscripion already exist.'
-        self.SUBSCRIPTION[chat_id].append(chat)
+        self.SUBSCRIPTION[reciever].append(getSenderDict(sender))
         self.save()
         return 'success'
 
