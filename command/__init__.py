@@ -8,7 +8,8 @@ def handleCommand(update, context, dbs):
     command, text = splitCommand(msg.text)
     if 's3_l' in command:
         subscriptions = dbs.getList(msg.chat_id)
-        subscriptions = [str(index) + ': ' + formatChat(x['id']) for \
+        subscriptions = [str(index) + ': ' + \
+            formatChat(context.bot, x['id']) for \
             index, x in enumerate(subscriptions)]
         r = msg.reply_text(
             'subscription list: \n\n' + '\n'.join(subscriptions), 
