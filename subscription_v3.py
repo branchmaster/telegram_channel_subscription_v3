@@ -40,7 +40,7 @@ def hold(msg):
 def addHold(update, context):
     if update.message:
         hold(update.message)
-        dbs.record(update.message.chat_id)
+        dbs.record(update.message.chat)
 
 @log_on_fail(debug_group)
 def manage(update, context):

@@ -34,7 +34,7 @@ def handleCommand(update, context, dbs):
         chat = getChat(context.bot, text)
         if not chat:
             return
-        r = dbs.add(msg.chat_id, chat.to_dict())
+        r = dbs.add(msg.chat, chat)
         autoDestroy(msg.reply_text(r, quote=False))
         return
     if 'all' in command:
