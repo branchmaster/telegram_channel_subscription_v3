@@ -136,7 +136,7 @@ class SUBSCRIPTION(object):
         self.SUBSCRIPTION[reciever.id] = self.SUBSCRIPTION.get(reciever.id, [])
         if sender.id in [x['id'] for x in self.SUBSCRIPTION[reciever.id]]:
             return 'FAIL: subscripion already exist.'
-        self.SUBSCRIPTION[reciever].append(getSenderDict(sender))
+        self.SUBSCRIPTION[reciever.id].append(getSenderDict(sender))
         self.save()
         return 'success'
 
