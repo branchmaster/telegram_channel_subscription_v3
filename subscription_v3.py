@@ -39,11 +39,12 @@ def hold(msg):
 @log_on_fail(debug_group)
 def addHold(update, context):
     print(1)
-    if update.message:
+    msg = update.effective_message
+    if msg:
         print(2)
-        hold(update.message)
+        hold(msg)
         print(3)
-        dbs.record(update.message.chat)
+        dbs.record(msg.chat)
         print(4)
 
 @log_on_fail(debug_group)
