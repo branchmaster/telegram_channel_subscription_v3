@@ -38,14 +38,10 @@ def hold(msg):
 
 @log_on_fail(debug_group)
 def addHold(update, context):
-    print(1)
     msg = update.effective_message
     if msg:
-        print(2)
         hold(msg)
-        print(3)
         dbs.record(msg.chat)
-        print(4)
 
 @log_on_fail(debug_group)
 def manage(update, context):

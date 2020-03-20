@@ -127,9 +127,9 @@ class SUBSCRIPTION(object):
                     break
         return result
 
-    def record(self, chat_id):
-        if not chat_id in self.SUBSCRIPTION:
-            self.SUBSCRIPTION[chat_id] = []
+    def record(self, chat):
+        if not chat.id in self.SUBSCRIPTION:
+            self.SUBSCRIPTION[chat.id] = []
             self.save()
 
     def add(self, reciever, sender):

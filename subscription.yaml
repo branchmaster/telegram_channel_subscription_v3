@@ -17,28 +17,6 @@
   username: equality_and_rights
 - id: -1001474132510
   username: daily_feminist
-? !!python/object:telegram.chat.Chat
-  _id_attrs: !!python/tuple
-  - -1001371029868
-  all_members_are_administrators: null
-  bot: !!python/object/apply:telegram.bot.Bot
-  - 895724230:AAHaNMmmtjvIGNDs8YJ6bD2bekQhi8woNdU
-  - https://api.telegram.org/bot
-  - https://api.telegram.org/file/bot
-  can_set_sticker_set: null
-  description: null
-  first_name: null
-  id: -1001371029868
-  invite_link: null
-  last_name: null
-  permissions: null
-  photo: null
-  pinned_message: null
-  sticker_set_name: null
-  title: "\u65B0\u95FB\u64AD\u62A5PDF"
-  type: channel
-  username: news_pdf
-: []
 -1001414226421:
 - id: -1001402599670
   username: social_justice_watch
