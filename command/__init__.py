@@ -1,9 +1,6 @@
-from telegram_util import splitCommand, autoDestroy, getChat
+from telegram_util import splitCommand, autoDestroy, getChat, formatChat
 
 forward_all_record = {}
-
-def formatSubscription(s):
-    return '[' + s['title'] + '](t.me/' + str(s.get('username')) + ')'
 
 def handleCommand(update, context, dbs):
     msg = update.effective_message
@@ -11,7 +8,7 @@ def handleCommand(update, context, dbs):
     command, text = splitCommand(msg.text)
     if 's3_l' in command:
         subscriptions = dbs.getList(msg.chat_id)
-        subscriptions = [str(index) + ': ' + formatSubscription(x) for \
+        subscriptions = [str(index) + ': ' + formatChat(x['id']) for \
             index, x in enumerate(subscriptions)]
         r = msg.reply_text(
             'subscription list: \n\n' + '\n'.join(subscriptions), 
