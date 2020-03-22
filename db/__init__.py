@@ -20,7 +20,7 @@ class HOLD(object):
         return not not self.holds.get(x)
 
     def clearHold(self, debug_group):
-        for x in self.holds:
+        for x in list(self.holds.keys()):
             while self.holds[x]:
                 t, msg = self.holds[x].pop()
                 if t < time.time():
