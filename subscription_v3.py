@@ -97,9 +97,6 @@ def loopImp():
         if 'test' in str(sys.argv):
             if reciever != -1001197970228:
                 continue
-            else:
-                print(item)
-        print('here')
         
         if dbh.onHold(reciever):
             continue
