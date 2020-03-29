@@ -33,8 +33,7 @@ def hold(msg):
         dbh.hold(msg.media_group_id, hold_hour = 5)
     cache.add((msg.chat_id, orig_msg[0], orig_msg[1]))
 
-    hold_hour = 1 if msg.chat_id == -1001197970228 else 3 # Hack...
-    dbh.hold(msg.chat_id, msg, hold_hour=hold_hour)
+    dbh.hold(msg.chat_id, msg, hold_hour=queue.getHoldHour(msg.chat_id))
 
 @log_on_fail(debug_group)
 def addHold(update, context):
@@ -135,7 +134,7 @@ def loop():
         print('loop', loop_count)
     loop_count += 1
     loopImp()
-    threading.Timer(HOUR, loop).start() 
+    threading.Timer(HOUR * 0.5, loop).start() 
 
 threading.Timer(1, loop).start()
 

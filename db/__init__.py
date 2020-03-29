@@ -91,6 +91,12 @@ class QUEUE(object):
             f.write(yaml.dump(self.queue, sort_keys=True, indent=2))
         os.system('mv queue_tmp.yaml queue.yaml')
 
+    def getHoldHour(self, reciever):
+        r = [x[3] if x[3] else (x[1], x[2]) for x in self.queue if x[0] == reciever]
+        waiting = len(set(r)) + 1.0
+        print('getHoldHour', reciever, max(5, 48.0 / waiting))
+        return max(5, 48.0 / waiting)
+
 class SUBSCRIPTION(object):
     def __init__(self):
         try:
