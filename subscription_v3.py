@@ -129,8 +129,6 @@ def loopImp():
             hold(m)
         if media_group_id:
             dbh.hold(media_group_id, hold_hour = 5)
-        if 'test' in str(sys.argv):
-            print('sent', chat_id, message_id)
         queue_to_push_back.pop()
         hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
@@ -142,7 +140,7 @@ def loop():
         print('loop', loop_count)
     loop_count += 1
     loopImp()
-    threading.Timer(HOUR * 0.5, loop).start() 
+    threading.Timer(HOUR, loop).start() 
 
 threading.Timer(1, loop).start()
 
