@@ -99,6 +99,7 @@ def loopImp():
                 continue
             else:
                 print(item)
+        print('here')
         
         if dbh.onHold(reciever):
             continue
