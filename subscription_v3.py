@@ -94,8 +94,12 @@ def loopImp():
         item = queue.pop()
         queue_to_push_back.append(item)
         reciever, chat_id, message_id, media_group_id = item
-        if 'test' in str(sys.argv) and reciever != -1001197970228:
-            continue
+        if 'test' in str(sys.argv):
+            if reciever != -1001197970228:
+                continue
+            else:
+                print(item)
+        
         if dbh.onHold(reciever):
             continue
         if media_group_id and dbh.onHold(media_group_id):
@@ -106,6 +110,8 @@ def loopImp():
                 from_chat_id = chat_id, message_id = message_id)
             r.delete()
         except:
+            if 'test' in str(sys.argv):
+                print('message no longer exist.', chat_id, message_id)
             queue_to_push_back.pop()
             continue
 
@@ -116,6 +122,8 @@ def loopImp():
             continue
 
         if not cache.add((reciever, orig_msg[0], orig_msg[1])):
+            if 'test' in str(sys.argv):
+                print('message already sent', chat_id, message_id)
             queue_to_push_back.pop()
             continue
 
@@ -123,6 +131,8 @@ def loopImp():
             hold(m)
         if media_group_id:
             dbh.hold(media_group_id, hold_hour = 5)
+        if 'test' in str(sys.argv):
+            print('sent', chat_id, message_id)
         queue_to_push_back.pop()
         hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
