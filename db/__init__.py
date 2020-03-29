@@ -74,7 +74,6 @@ class QUEUE(object):
 
     def pop(self):
         x = self.queue.pop()
-        self.save()
         return x
 
     def pop_all(self, a, b, d):
