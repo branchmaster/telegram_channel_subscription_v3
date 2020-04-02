@@ -4,7 +4,7 @@ forward_all_record = {}
 
 def handleCommand(update, context, dbs):
     msg = update.effective_message
-    autoDestroy(msg)
+    autoDestroy(msg, 0.1)
     command, text = splitCommand(msg.text)
     if 's3_l' in command:
         subscriptions = dbs.getList(msg.chat_id)
@@ -46,7 +46,7 @@ def handleCommand(update, context, dbs):
             if int(reciever) != msg.chat_id:
                 if to_forward.text_markdown:
                     r = msg.bot.send_message(reciever, to_forward.text_markdown, 
-                        parse_mode='Markdown')
+                        parse_mode='Markdown', disable_web_page_preview=True)
                 elif to_forward.photo:
                     r = msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
                         caption=to_forward.caption_markdown, parse_mode='Markdown')
