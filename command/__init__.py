@@ -2,6 +2,30 @@ from telegram_util import splitCommand, autoDestroy, getChat, formatChat
 
 forward_all_record = {}
 
+def sendAll(msg, dbs):
+    global forward_all_record
+    # untested code
+    to_forward = msg.reply_to_message
+    key = (to_forward.chat_id, to_forward.message_id)
+    if key not in forward_all_record:
+        forward_all_record[key] = []
+
+    for reciever in dbs.getAll():
+        if int(reciever) == msg.chat_id:
+            continue
+        try:
+            if to_forward.text_markdown:
+                r = msg.bot.send_message(reciever, to_forward.text_markdown, 
+                    parse_mode='Markdown', disable_web_page_preview=True)
+            elif to_forward.photo:
+                r = msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
+                    caption=to_forward.caption_markdown, parse_mode='Markdown')
+            else:
+                r = to_forward.forward(reciever)
+            forward_all_record[key].append(r)
+        except:
+            pass     
+
 def handleCommand(update, context, dbs):
     msg = update.effective_message
     autoDestroy(msg, 0.1)
@@ -36,23 +60,7 @@ def handleCommand(update, context, dbs):
         autoDestroy(msg.reply_text(r, quote=False))
         return
     if 'all' in command:
-        global forward_all_record
-        # untested code
-        to_forward = msg.reply_to_message
-        key = (to_forward.chat_id, to_forward.message_id)
-        if key not in forward_all_record:
-            forward_all_record[key] = []
-        for reciever in dbs.getAll():
-            if int(reciever) != msg.chat_id:
-                if to_forward.text_markdown:
-                    r = msg.bot.send_message(reciever, to_forward.text_markdown, 
-                        parse_mode='Markdown', disable_web_page_preview=True)
-                elif to_forward.photo:
-                    r = msg.bot.send_photo(reciever, to_forward.photo[-1].file_id, 
-                        caption=to_forward.caption_markdown, parse_mode='Markdown')
-                else:
-                    r = to_forward.forward(reciever)
-                forward_all_record[key].append(r)
+        sendAll(msg, dbs)         
         return
     if 'delete' in command:
         to_delete = msg.reply_to_message
