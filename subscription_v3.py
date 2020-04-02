@@ -142,7 +142,7 @@ def loop():
     loopImp()
     threading.Timer(HOUR, loop).start() 
 
-# threading.Timer(1, loop).start()
+threading.Timer(1, loop).start()
 
 tele.start_polling()
 tele.idle()
