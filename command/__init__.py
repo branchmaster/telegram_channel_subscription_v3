@@ -10,7 +10,7 @@ def sendAll(msg, dbs):
     if key not in forward_all_record:
         forward_all_record[key] = []
 
-    for reciever in dbs.getAll():
+    for reciever in dbs.getAll(msg.bot):
         if int(reciever) == msg.chat_id:
             continue
         try:

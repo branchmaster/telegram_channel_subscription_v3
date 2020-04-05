@@ -107,9 +107,15 @@ class SUBSCRIPTION(object):
         return self.SUBSCRIPTION.get(chat_id, [])
 
     def getAll(self):
+        # only non-channel group and channels
         r = set()
         for x in self.SUBSCRIPTION:
-            r.add(x)
+            try: # not tested yet
+                channel = msg.bot.get_chat(x)
+                if x.type == 'channel':
+                    r.add(x)
+            except:
+                pass
             for y in self.SUBSCRIPTION[x]:
                 r.add(y['id'])
         return r
