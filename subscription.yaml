@@ -11,6 +11,9 @@
 -1001445981123:
 - id: -1001241147938
   username: books_and_reads
+-1001434441514:
+- id: -1001251820947
+  username: daily_read
 -1001432997913: []
 -1001425432826: []
 -1001416489250: []
@@ -47,6 +50,8 @@
   username: daily_feminist
 - id: -1001250188871
   username: opinion_feed
+- id: -1001251820947
+  username: daily_read
 -1001341438972: []
 -1001316482298: []
 -1001301407567: []
@@ -69,6 +74,8 @@
   username: equality_and_rights
 - id: -1001474132510
   username: daily_feminist
+- id: -1001251820947
+  username: daily_read
 -1001198682178: []
 -1001198006031:
 - id: -1001219207617
@@ -79,6 +86,8 @@
   username: equality_and_rights
 - id: -1001474132510
   username: daily_feminist
+- id: -1001251820947
+  username: daily_read
 -1001197970228:
 - id: -1001409716127
   username: equality_and_rights
