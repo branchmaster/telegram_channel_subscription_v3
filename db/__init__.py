@@ -110,14 +110,18 @@ class SUBSCRIPTION(object):
         # only non-channel group and channels
         r = set()
         for x in self.SUBSCRIPTION:
-            try: # not tested yet
+            try:
                 channel = bot.get_chat(x)
-                if x.type == 'channel':
+                if channel.type == 'channel':
                     r.add(x)
             except:
                 pass
             for y in self.SUBSCRIPTION[x]:
-                r.add(y['id'])
+                try: # not tested yet
+                    channel = bot.get_chat(y['id'])
+                    r.add(y['id'])
+                except:
+                    pass
         return r
 
     def deleteIndex(self, chat_id, index):
