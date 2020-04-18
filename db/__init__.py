@@ -106,12 +106,12 @@ class SUBSCRIPTION(object):
     def getList(self, chat_id):
         return self.SUBSCRIPTION.get(chat_id, [])
 
-    def getAll(self):
+    def getAll(self, bot):
         # only non-channel group and channels
         r = set()
         for x in self.SUBSCRIPTION:
             try: # not tested yet
-                channel = msg.bot.get_chat(x)
+                channel = bot.get_chat(x)
                 if x.type == 'channel':
                     r.add(x)
             except:
