@@ -5,25 +5,20 @@ def kill():
 	os.system("ps aux | grep ython | grep subscription_v3 | awk '{print $2}' | xargs kill -9")
 
 def setup(arg = ''):
+	kill()
 	if arg == 'kill':
-		kill()
 		return 
 
-	RUN_COMMAND = 'nohup python3 -u subscription_v3.py &'
+	os.system('pip3 install --user -r requirements.txt --upgrade')
 	
-	if arg != 'debug':
-		r = os.system('pip3 install --user -r requirements.txt --upgrade')
-		if r != 0:
-			os.system('curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py')
-			os.system('sudo python3 get-pip.py')
-			os.system('rm get-pip.py')
-			os.system('pip3 install --user -r requirements.txt')
-
-	kill()
-	if arg.startswith('debug'):
-		os.system(RUN_COMMAND[6:-2])
+	addtional_arg = ' '.join(sys.argv[1:])
+	command = 'python3 -u subscription_v3.py %s' % addtional_arg
+	if 'debug' in addtional_arg or 'skip' in addtional_arg or 'once' in addtional_arg:
+		os.system(command + ' test')
 	else:
-		os.system(RUN_COMMAND)
+		os.system('nohup %s &' % command)
+		if 'notail' not in addtional_arg:
+			os.system('touch nohup.out && tail -F nohup.out')
 
 
 if __name__ == '__main__':
