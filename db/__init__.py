@@ -112,7 +112,7 @@ class SUBSCRIPTION(object):
         for x in self.SUBSCRIPTION:
             try:
                 channel = bot.get_chat(x)
-                if channel.type == 'channel':
+                if channel.type == 'channel' or self.SUBSCRIPTION[x]:
                     r.add(x)
             except:
                 pass
