@@ -140,7 +140,7 @@ def loop():
         print('loop', loop_count)
     loop_count += 1
     loopImp()
-    threading.Timer(HOUR, loop).start() 
+    threading.Timer(HOUR * 0.5, loop).start() 
 
 if 'skip' not in str(sys.argv):
     threading.Timer(1, loop).start()
