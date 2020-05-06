@@ -48,8 +48,6 @@ def manage(update, context):
     if not msg:
         return
     for reciever in dbs.getSubsribers(msg.chat_id):
-        if queue.getHoldHour(reciever) < 0.3:
-            continue
         queue.append((reciever, msg.chat_id, msg.message_id, msg.media_group_id))
     hold(msg)
 
@@ -63,20 +61,13 @@ tele.dispatcher.add_handler(MessageHandler(
 def forwardMsg(item):
     reciever, chat_id, message_id, media_group_id = item
     if not media_group_id:
-        try:
-            return [bot.forward_message(chat_id = reciever,
-                from_chat_id = chat_id, message_id = message_id)]
-        except Exception as e:
-            print(item)
-            raise e
+        return [bot.forward_message(chat_id = reciever,
+            from_chat_id = chat_id, message_id = message_id)]
     media = []
     for mid in queue.pop_all(reciever, chat_id, media_group_id) + [message_id]:
-        try:
-            r = bot.forward_message(chat_id = debug_group.id, 
-                from_chat_id = chat_id, message_id = mid)
-            r.delete()
-        except Exception as e:
-            pass
+        r = bot.forward_message(chat_id = debug_group.id, 
+            from_chat_id = chat_id, message_id = mid)
+        r.delete()
         if r.photo[-1].file_id not in [x.media for x in media]:
             m = InputMediaPhoto(r.photo[-1].file_id, 
                 caption=r.caption_markdown, parse_mode='Markdown')
@@ -84,9 +75,7 @@ def forwardMsg(item):
                 media = [m] + media
             else:
                 media.append(m)
-    if media:
-        return bot.send_media_group(reciever, media)
-    return []
+    return bot.send_media_group(reciever, media)
 
 @log_on_fail(debug_group)
 def loopImp():
@@ -100,7 +89,7 @@ def loopImp():
             if reciever != -1001197970228:
                 continue
         
-        if dbh.onHold(reciever):
+        if dbh.onHold(reciever) and queue.getHoldHour(reciever) > 0.3:
             continue
         if media_group_id and dbh.onHold(media_group_id):
             continue
@@ -127,8 +116,12 @@ def loopImp():
             queue_to_push_back.pop()
             continue
 
-        for m in forwardMsg(item):
-            hold(m)
+        try:
+            for m in forwardMsg(item):
+                hold(m)
+        except Exception as e:
+            print(str(e))
+            
         if media_group_id:
             dbh.hold(media_group_id, hold_hour = 5)
         queue_to_push_back.pop()
