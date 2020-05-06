@@ -48,6 +48,8 @@ def manage(update, context):
     if not msg:
         return
     for reciever in dbs.getSubsribers(msg.chat_id):
+        if queue.getHoldHour(reciever) < 0.3:
+            continue
         queue.append((reciever, msg.chat_id, msg.message_id, msg.media_group_id))
     hold(msg)
 
