@@ -14,6 +14,7 @@ dbs = SUBSCRIPTION()
 queue = QUEUE()
 dbh = HOLD()
 cache = CACHE()
+orig_msg_map = {}
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -77,6 +78,23 @@ def forwardMsg(item):
                 media.append(m)
     return bot.send_media_group(reciever, media)
 
+def getOrigMsg(chat_id, message_id):
+    if (chat_id, message_id) in orig_msg_map:
+        return orig_msg_map[(chat_id, message_id)]
+    try:
+        r = bot.forward_message(chat_id = debug_group.id, 
+            from_chat_id = chat_id, message_id = message_id)
+        r.delete()
+    except Exception as e:
+        if 'test' in str(sys.argv):
+            print('message no longer exist.', str(e), chat_id, message_id)
+        return (None, None)
+
+    orig_msg = (r.forward_from_chat.id, r.forward_from_message_id) \
+        if r.forward_from_chat else (chat_id, message_id)
+    orig_msg_map[(chat_id, message_id)] = orig_msg
+    return orig_msg
+
 @log_on_fail(debug_group)
 def loopImp():
     dbh.clearHold(debug_group)
@@ -94,18 +112,11 @@ def loopImp():
         if media_group_id and dbh.onHold(media_group_id):
             continue
         
-        try:
-            r = bot.forward_message(chat_id = debug_group.id, 
-                from_chat_id = chat_id, message_id = message_id)
-            r.delete()
-        except:
-            if 'test' in str(sys.argv):
-                print('message no longer exist.', chat_id, message_id)
+        orig_msg = getOrigMsg(chat_id, message_id)
+
+        if not orig_msg[0]:
             queue_to_push_back.pop()
             continue
-
-        orig_msg = (r.forward_from_chat.id, r.forward_from_message_id) \
-            if r.forward_from_chat else (chat_id, message_id)
 
         if dbh.onHold(orig_msg):
             continue
