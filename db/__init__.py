@@ -25,12 +25,6 @@ class HOLD(object):
                 t, msg = self.holds[x].pop()
                 if t < time.time():
                     continue
-                if msg:
-                    try:
-                        r = msg.forward(debug_group.id)
-                        r.delete()
-                    except Exception as e:
-                        continue
                 self.holds[x].append((t, msg))
                 break
 
