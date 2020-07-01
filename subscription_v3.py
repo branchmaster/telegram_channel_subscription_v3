@@ -9,6 +9,7 @@ import threading
 from telegram_util import log_on_fail
 from command import handleCommand
 import sys
+import time
 
 dbs = SUBSCRIPTION()
 queue = QUEUE()
@@ -111,6 +112,8 @@ def loopImp():
             continue
         if media_group_id and dbh.onHold(media_group_id):
             continue
+
+        time.sleep(10)
         
         orig_msg = getOrigMsg(chat_id, message_id)
 
