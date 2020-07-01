@@ -109,7 +109,7 @@ def loopImp():
             if reciever != -1001197970228:
                 continue
         
-        if dbh.onHold(reciever) and queue.getHoldHour(dbh, reciever) > 0.3:
+        if dbh.onHold(reciever) and queue.getQueueLen(reciever) > 50:
             continue
         if media_group_id and dbh.onHold(media_group_id):
             continue

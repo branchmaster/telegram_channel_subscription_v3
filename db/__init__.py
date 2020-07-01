@@ -92,6 +92,10 @@ class QUEUE(object):
         waiting = len(set(r)) + 1.0 + dbh.holdLen(reciever)
         return min(5, 24.0 / waiting)
 
+    def getQueueLen(self, reciever):
+        r = [x[3] if x[3] else (x[1], x[2]) for x in self.queue if x[0] == reciever]
+        return len(set(r))
+
 class SUBSCRIPTION(object):
     def __init__(self):
         try:
