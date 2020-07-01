@@ -19,6 +19,9 @@ class HOLD(object):
     def onHold(self, x):
         return not not self.holds.get(x)
 
+    def holdLen(self, x):
+        return len(self.holds.get(x, []))
+
     def clearHold(self, debug_group):
         for x in list(self.holds.keys()):
             while self.holds[x]:
@@ -84,9 +87,9 @@ class QUEUE(object):
             f.write(yaml.dump(self.queue, sort_keys=True, indent=2))
         os.system('mv queue_tmp.yaml queue.yaml')
 
-    def getHoldHour(self, reciever):
+    def getHoldHour(self, dbh, reciever):
         r = [x[3] if x[3] else (x[1], x[2]) for x in self.queue if x[0] == reciever]
-        waiting = len(set(r)) + 1.0
+        waiting = len(set(r)) + 1.0 + dbh.holdLen(reciever)
         return min(5, 24.0 / waiting)
 
 class SUBSCRIPTION(object):
