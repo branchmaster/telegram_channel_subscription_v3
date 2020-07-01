@@ -135,7 +135,7 @@ def loop():
         print('loop', loop_count)
     loop_count += 1
     loopImp()
-    threading.Timer(10, loop).start() 
+    threading.Timer(10 * 60, loop).start() 
 
 if 'skip' not in str(sys.argv):
     threading.Timer(1, loop).start()
