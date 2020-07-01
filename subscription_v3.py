@@ -20,7 +20,7 @@ with open('CREDENTIALS') as f:
 
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 bot = tele.bot
-debug_group = bot.get_chat(-1001198682178)
+debug_group = bot.get_chat(420074357)
 
 @log_on_fail(debug_group)
 def command(update, context):
@@ -135,7 +135,7 @@ def loop():
         print('loop', loop_count)
     loop_count += 1
     loopImp()
-    threading.Timer(HOUR * 0.5, loop).start() 
+    threading.Timer(10, loop).start() 
 
 if 'skip' not in str(sys.argv):
     threading.Timer(1, loop).start()
