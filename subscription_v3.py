@@ -136,7 +136,6 @@ def loopImp():
         if media_group_id:
             dbh.hold(media_group_id, hold_hour = 5)
         queue_to_push_back.pop()
-        hold(r)
     queue.replace(queue_to_push_back[::-1]) # preserve order
 
 loop_count = 0
