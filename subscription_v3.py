@@ -82,6 +82,7 @@ def forwardMsg(item):
 def getOrigMsg(chat_id, message_id):
     if (chat_id, message_id) in orig_msg_map:
         return orig_msg_map[(chat_id, message_id)]
+    time.sleep(10)
     try:
         r = bot.forward_message(chat_id = debug_group.id, 
             from_chat_id = chat_id, message_id = message_id)
@@ -112,8 +113,6 @@ def loopImp():
             continue
         if media_group_id and dbh.onHold(media_group_id):
             continue
-
-        time.sleep(10)
         
         orig_msg = getOrigMsg(chat_id, message_id)
 
@@ -130,6 +129,7 @@ def loopImp():
             queue_to_push_back.pop()
             continue
 
+        time.sleep(10)
         try:
             for m in forwardMsg(item):
                 hold(m)
