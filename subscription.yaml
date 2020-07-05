@@ -105,6 +105,10 @@
   username: douban_read
 - id: -1001374366482
   username: weibo_read
+- id: -1001219808151
+  username: PincongRecommend
+- id: -1001325205364
+  username: jike_collection
 -1001282758208:
 - id: -1001474132510
   username: daily_feminist
