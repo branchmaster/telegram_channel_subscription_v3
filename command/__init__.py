@@ -1,4 +1,4 @@
-from telegram_util import splitCommand, autoDestroy, getChat, formatChat
+from telegram_util import splitCommand, autoDestroy, getChat, formatChat, matchKey
 
 forward_all_record = {}
 
