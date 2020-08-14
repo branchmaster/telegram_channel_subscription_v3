@@ -62,9 +62,10 @@ def handleCommand(update, context, dbs):
         r = dbs.add(msg.chat, chat)
         autoDestroy(msg.reply_text(r, quote=False))
         return
-    if 'all' in command:
-        sendAll(msg, dbs)         
-        return
+    # guard this feature
+    # if 'all' in command:
+    #     sendAll(msg, dbs)         
+    #     return
     if 'delete' in command:
         to_delete = msg.reply_to_message
         key = (to_delete.chat_id, to_delete.message_id)
