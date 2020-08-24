@@ -1,4 +1,5 @@
 from telegram_util import splitCommand, autoDestroy, getChat, formatChat, matchKey
+from .common import debug_group
 
 forward_all_record = {}
 
@@ -62,6 +63,11 @@ def handleCommand(update, context, dbs):
         r = dbs.add(msg.chat, chat)
         autoDestroy(msg.reply_text(r, quote=False))
         return
+    if not msg.from_user or msg.from_user.id != debug_group.id:
+        return
+    if 'repeat' in command:
+        msg.bot.send_message(msg.chat.id, msg.reply_to_message.text_markdown, 
+            parse_mode='Markdown', disable_web_page_preview=True)
     # guard this feature
     # if 'all' in command:
     #     sendAll(msg, dbs)         

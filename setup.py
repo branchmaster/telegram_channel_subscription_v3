@@ -6,10 +6,8 @@ def kill():
 
 def setup(arg = ''):
 	kill()
-	if arg == 'kill':
+	if 'kill' in sys.argv:
 		return 
-
-	os.system('pip3 install --user -r requirements.txt --upgrade')
 	
 	addtional_arg = ' '.join(sys.argv[1:])
 	command = 'python3 -u subscription_v3.py %s' % addtional_arg
@@ -22,7 +20,4 @@ def setup(arg = ''):
 
 
 if __name__ == '__main__':
-	if len(sys.argv) > 1:
-		setup(sys.argv[1])
-	else:
-		setup('')
+	setup()
