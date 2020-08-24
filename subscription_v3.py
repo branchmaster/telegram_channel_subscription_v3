@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import yaml
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import MessageHandler, Filters
 from telegram import InputMediaPhoto
 from db import SUBSCRIPTION, QUEUE, HOLD, CACHE, HOUR
 import threading
@@ -10,19 +9,13 @@ from telegram_util import log_on_fail
 from command import handleCommand
 import sys
 import time
+from .common import tele, bot, debug_group
 
 dbs = SUBSCRIPTION()
 queue = QUEUE()
 dbh = HOLD()
 cache = CACHE()
 orig_msg_map = {}
-
-with open('CREDENTIALS') as f:
-    CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
-
-tele = Updater(CREDENTIALS['bot_token'], use_context=True)
-bot = tele.bot
-debug_group = bot.get_chat(420074357)
 
 @log_on_fail(debug_group)
 def command(update, context):
