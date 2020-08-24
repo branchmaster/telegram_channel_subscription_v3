@@ -6,10 +6,10 @@ from telegram import InputMediaPhoto
 from db import SUBSCRIPTION, QUEUE, HOLD, CACHE, HOUR
 import threading
 from telegram_util import log_on_fail
-from .command import handleCommand
+from command import handleCommand
 import sys
 import time
-from .common import tele, bot, debug_group
+from common import tele, bot, debug_group
 
 dbs = SUBSCRIPTION()
 queue = QUEUE()

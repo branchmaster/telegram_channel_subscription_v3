@@ -1,5 +1,5 @@
 from telegram_util import splitCommand, autoDestroy, getChat, formatChat, matchKey
-from .common import debug_group
+from common import debug_group
 
 forward_all_record = {}
 
