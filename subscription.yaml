@@ -1,19 +1,12 @@
--1001498030120: []
--1001484241754: []
--1001481629772: []
 -1001480187219:
 - id: -1001206770471
   username: douban_read
--1001474132510: []
 -1001468062303:
 - id: -1001235497914
   username: TuZaFiles
--1001467136245: []
--1001461044309: []
 -1001453058488:
 - id: -1001235497914
   username: TuZaFiles
--1001452384739: []
 -1001451342841:
 - id: -1001219207617
   username: citizen_united
@@ -21,18 +14,14 @@
   username: freedom_watch
 - id: -1001474132510
   username: daily_feminist
--1001447000950: []
 -1001445981123:
 - id: -1001241147938
   username: books_and_reads
 - id: -1001384470139
   username: poem_and_art
--1001441167695: []
 -1001434441514:
 - id: -1001251820947
   username: daily_read
--1001432997913: []
--1001425546063: []
 -1001425432826:
 - id: -1001369140206
   username: people_sing
@@ -40,7 +29,6 @@
   username: daily_feminist
 - id: -1001286091818
   username: freedom_watch
--1001419508192: []
 -1001416489250:
 - id: -1001369140206
   username: people_sing
@@ -69,7 +57,6 @@
   username: people_sing
 - id: -1001402599670
   username: social_justice_watch
--1001402599670: []
 -1001402046064:
 - id: -1001409716127
   username: equality_and_rights
@@ -77,16 +64,11 @@
   username: daily_feminist
 - id: -1001282758208
   username: feminist_watch
--1001399998441: []
 -1001390768259:
 - id: -1001242345127
   username: cupmedia
 - id: -1001027214245
   username: nytimes
--1001374366482: []
--1001371594456: []
--1001371029868: []
--1001370746032: []
 -1001369425802:
 - id: -1001409716127
   username: equality_and_rights
@@ -94,7 +76,6 @@
   username: daily_feminist
 - id: -1001282758208
   username: feminist_watch
--1001369140206: []
 -1001368792927:
 - id: -1001219207617
   username: citizen_united
@@ -112,10 +93,6 @@
   username: feminist_watch
 - id: -1001135457577
   username: writing_discuss
--1001368743625: []
--1001345691341: []
--1001341438972: []
--1001325203779: []
 -1001316482298:
 - id: -1001474132510
   username: daily_feminist
@@ -123,43 +100,17 @@
   username: people_sing
 - id: -1001453460651
   username: atheism_discuss
--1001313942972:
-- id: -1001206770471
-  username: douban_read
-- id: -1001374366482
-  username: weibo_read
-- id: -1001135387315
-  username: danziguocaiyi
-- id: -1001286091818
-  username: freedom_watch
-- id: -1001351232859
-  username: allzhnews
-- id: -1001080786380
-  username: breakingnews_t
-- id: -1001263050068
-  username: zaobaosg
-- id: -1001474132510
-  username: daily_feminist
-- id: -1001153383218
-  username: KatyushaUnion
-- id: -1001377447316
-  username: lumingguandj
--1001313713989: []
 -1001301407567:
 - id: -1001369140206
   username: people_sing
 - id: -1001402599670
   username: social_justice_watch
--1001295491757: []
--1001286091818: []
 -1001282979447:
 - id: -1001235497914
   username: TuZaFiles
 -1001282758208:
 - id: -1001474132510
   username: daily_feminist
--1001269672434: []
--1001268219757: []
 -1001266495919:
 - id: -1001478378439
   username: yingtaoshe
@@ -167,16 +118,6 @@
   username: chinatrikemap
 - id: -1001188157159
   username: chinaworkerISA
--1001259593252: []
--1001256356831: []
--1001251820947: []
--1001250188871: []
--1001247754273: []
--1001241147938: []
--1001219207617: []
--1001206770471: []
--1001204994716: []
--1001202818926: []
 -1001199060777:
 - id: -1001219207617
   username: citizen_united
@@ -190,7 +131,6 @@
   username: us_watch
 - id: -1001402599670
   username: social_justice_watch
--1001198682178: []
 -1001198006031:
 - id: -1001219207617
   username: citizen_united
@@ -246,27 +186,17 @@
   username: atheism_discuss
 - id: -1001427773894
   username: labor_one
--1001187025732: []
 -1001186077526:
 - id: -1001235497914
   username: TuZaFiles
--1001177823847: []
--1001168818813: []
 -1001159308200:
 - id: -1001235497914
   username: TuZaFiles
--1001155113691: []
--1001135555573: []
--1001135457577: []
--1001100495361: []
--1001100334908: []
 -1001097562663:
 - id: -1001286091818
   username: freedom_watch
 - id: -1001177823847
   username: muddycat
--446231300: []
--366805232: []
 -309677660:
 - id: -1001242345127
   username: cupmedia
