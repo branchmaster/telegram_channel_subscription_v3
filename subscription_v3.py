@@ -127,7 +127,7 @@ def loopImp():
             for m in forwardMsg(item):
                 hold(m)
         except Exception as e:
-            print(str(e))
+            print('forwardMsg fail', str(e), item)
             
         if media_group_id:
             dbh.hold(media_group_id, hold_hour = 5)
