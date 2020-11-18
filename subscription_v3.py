@@ -143,7 +143,9 @@ def loop():
     loopImp()
     threading.Timer(10 * 60, loop).start() 
 
-if 'skip' not in str(sys.argv):
+if 'debug' in str(sys.argv):
+    threading.Timer(10, loop).start()
+else:
     threading.Timer(60 * 60, loop).start()
 
 tele.start_polling()
