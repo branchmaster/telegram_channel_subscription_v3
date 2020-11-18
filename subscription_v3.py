@@ -144,7 +144,7 @@ def loop():
     threading.Timer(10 * 60, loop).start() 
 
 if 'skip' not in str(sys.argv):
-    threading.Timer(1, loop).start()
+    threading.Timer(60 * 60, loop).start()
 
 tele.start_polling()
 tele.idle()
