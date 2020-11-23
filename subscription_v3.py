@@ -10,6 +10,7 @@ from command import handleCommand
 import sys
 import time
 from common import tele, bot, debug_group
+import traceback as tb
 
 dbs = SUBSCRIPTION()
 queue = QUEUE()
@@ -63,6 +64,9 @@ def forwardMsg(item):
         r = bot.forward_message(chat_id = debug_group.id, 
             from_chat_id = chat_id, message_id = mid)
         r.delete()
+        # we would not support video group or document group for now.
+        # If later we see the need, we can add it.
+        # note: video group and document group are relatively new feature in telegram
         if r.photo[-1].file_id not in [x.media for x in media]:
             m = InputMediaPhoto(r.photo[-1].file_id, 
                 caption=r.caption_markdown, parse_mode='Markdown')
@@ -128,7 +132,6 @@ def loopImp():
                 hold(m)
         except Exception as e:
             print('forwardMsg fail', str(e), item)
-            
         if media_group_id:
             dbh.hold(media_group_id, hold_hour = 5)
         queue_to_push_back.pop()
