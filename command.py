@@ -28,16 +28,13 @@ def sendAll(msg, dbs):
             pass     
 
 def handleCommand(update, context, dbs):
-    print(1)
     msg = update.effective_message
     autoDestroy(msg, 0.1)
     if msg.from_user and matchKey(msg.from_user.first_name, ['telegram']):
         # don't deal with group message auto forwarded linked channel
         return
-    print(2)
     command, text = splitCommand(msg.text)
     if 's3_l' in command:
-        print(3)
         subscriptions = dbs.getList(msg.chat_id)
         subscriptions = [str(index) + ': ' + \
             formatChat(context.bot, x['id']) for \
