@@ -47,12 +47,16 @@ def manage(update, context):
         queue.append((reciever, msg.chat_id, msg.message_id, msg.media_group_id))
     hold(msg)
 
+def handleLeft(update, context):
+    update.message.delete()
+
 tele.dispatcher.add_handler(MessageHandler(
     (~Filters.private) & Filters.command, command))
 tele.dispatcher.add_handler(MessageHandler(
     Filters.update.channel_posts & (~Filters.command), manage))
 tele.dispatcher.add_handler(MessageHandler(
     Filters.update.channel_posts | Filters.group, addHold), group=2)
+tele.dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.left_chat_member, handleLeft), group = 3)
 
 def forwardMsg(item):
     reciever, chat_id, message_id, media_group_id = item
