@@ -53,6 +53,8 @@
   username: women_united
 - id: -1001347182577
   username: queer_liberation
+- id: -1001442883964
+  username: queer_study
 -1001414226421:
 - id: -1001402599670
   username: social_justice_watch
@@ -87,6 +89,8 @@
   username: south_alliance
 - id: -1001304324593
   username: stop_genocide
+- id: -1001442883964
+  username: queer_study
 -1001408751192:
 - id: -1001369140206
   username: people_sing
@@ -96,6 +100,8 @@
   username: women_united
 - id: -1001347182577
   username: queer_liberation
+- id: -1001442883964
+  username: queer_study
 -1001402599670: []
 -1001402046064:
 - id: -1001409716127
@@ -141,7 +147,9 @@
 - id: -1001471213510
   username: women_united
 -1001368743625: []
--1001347182577: []
+-1001347182577:
+- id: -1001442883964
+  username: queer_study
 -1001341438972: []
 -1001326932731:
 - id: -1001484241754
@@ -162,6 +170,8 @@
   username: people_sing
 - id: -1001471213510
   username: women_united
+- id: -1001442883964
+  username: queer_study
 -1001286091818: []
 -1001282979447:
 - id: -1001235497914
@@ -169,6 +179,8 @@
 -1001282758208:
 - id: -1001474132510
   username: daily_feminist
+- id: -1001442883964
+  username: queer_study
 -1001269672434: []
 -1001266495919:
 - id: -1001478378439
@@ -280,6 +292,8 @@
   username: south_alliance
 - id: -1001237640500
   username: race_ethnicity
+- id: -1001442883964
+  username: queer_study
 -1001187025732: []
 -1001186077526:
 - id: -1001235497914
