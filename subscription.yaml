@@ -131,6 +131,8 @@
 -1001369140206:
 - id: -1001304324593
   username: stop_genocide
+- id: -1001332113417
+  username: police_violence
 -1001368792927:
 - id: -1001219207617
   username: citizen_united
@@ -169,10 +171,16 @@
   username: south_alliance
 - id: -1001347182577
   username: queer_liberation
+- id: -1001304324593
+  username: stop_genocide
+- id: -1001332113417
+  username: police_violence
 -1001313713989: []
 -1001311057389:
 - id: -1001304324593
   username: stop_genocide
+- id: -1001332113417
+  username: police_violence
 -1001301407567:
 - id: -1001369140206
   username: people_sing
@@ -311,6 +319,10 @@
   username: race_ethnicity
 - id: -1001442883964
   username: queer_study
+- id: -1001304324593
+  username: stop_genocide
+- id: -1001332113417
+  username: police_violence
 -1001187025732: []
 -1001186077526:
 - id: -1001235497914
